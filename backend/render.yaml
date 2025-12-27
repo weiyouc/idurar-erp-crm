@@ -1,0 +1,19 @@
+# Render Blueprint for Backend
+# This file can be used to deploy via Render Dashboard → New → Blueprint
+
+services:
+  - type: web
+    name: idurar-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE
+        sync: false  # Set this manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false  # Set this manually in Render dashboard
+
