@@ -2,7 +2,7 @@ import { Form, Input, Select, InputNumber, Switch, Button, Space, Card } from 'a
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import useLanguage from '@/locale/useLanguage';
-import request from '@/request';
+import { request } from '@/request';
 
 const { TextArea } = Input;
 

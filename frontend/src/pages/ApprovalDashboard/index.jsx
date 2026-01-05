@@ -7,7 +7,7 @@ import {
   FileTextOutlined 
 } from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
-import request from '@/request';
+import { request } from '@/request';
 import { DashboardLayout } from '@/layout';
 
 const { TextArea } = Input;

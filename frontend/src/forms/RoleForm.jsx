@@ -1,7 +1,7 @@
 import { Form, Input, Select, Transfer } from 'antd';
 import { useState, useEffect } from 'react';
 import useLanguage from '@/locale/useLanguage';
-import request from '@/request';
+import { request } from '@/request';
 
 const { TextArea } = Input;
 
