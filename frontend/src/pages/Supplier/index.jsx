@@ -1,6 +1,6 @@
 import React from 'react';
 import SupplierModule from '@/modules/SupplierModule';
-import { PageHeader } from '@/components';
+import { PageHeader } from '@ant-design/pro-layout';
 
 const SupplierPage = () => {
   return (
