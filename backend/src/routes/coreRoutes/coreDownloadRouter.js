@@ -1,8 +1,14 @@
 const downloadPdf = require('@/handlers/downloadHandler/downloadPdf');
+const attachmentController = require('@/controllers/attachmentController');
+const { catchErrors } = require('@/handlers/errorHandlers');
 const express = require('express');
 
 const router = express.Router();
 
+// Attachment download route (public)
+router.get('/attachment/:id', catchErrors(attachmentController.downloadFile));
+
+// Legacy PDF download route
 router.route('/:directory/:file').get(function (req, res) {
   try {
     const { directory, file } = req.params;

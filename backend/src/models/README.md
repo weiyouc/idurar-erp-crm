@@ -11,6 +11,7 @@ models/
 │   ├── Role.js          # Role definition for RBAC
 │   ├── Permission.js    # Permission definition for RBAC
 │   ├── AuditLog.js      # Immutable audit trail
+│   ├── Attachment.js    # File attachment management (Sprint 2)
 │   └── Upload.js        # File upload management (existing)
 │
 └── appModels/           # Application-specific models
@@ -327,6 +328,97 @@ models/
 - `findByDocument(documentType, documentId)` - Find workflow for document
 - `findRecentCompletions(days, limit)` - Recent completed workflows
 - `getStatistics(options)` - Aggregate statistics
+
+---
+
+### Attachment Model (`coreModels/Attachment.js`)
+
+**Purpose:** Generic file attachment management for any entity type
+
+**Key Features:**
+- Supports multiple file types (documents, images)
+- Flexible storage (local or S3)
+- Entity association (can attach to any model)
+- Soft delete with audit trail
+- Auto-generate unique filenames
+- File validation (size, type)
+
+**Key Fields:**
+```javascript
+{
+  // File Information
+  originalName: String,          // User's filename
+  storedName: String,            // Unique server filename
+  mimeType: String,              // File type
+  size: Number,                  // File size in bytes
+  path: String,                  // Storage path
+  url: String,                   // Access URL (for S3)
+  
+  // Association
+  entityType: String,            // 'Supplier', 'Material', etc.
+  entityId: ObjectId,            // ID of associated entity
+  fieldName: String,             // Field name ('license', 'certificate')
+  
+  // Storage
+  storageType: String,           // 'local' or 's3'
+  s3Bucket: String,              // S3 bucket (if S3)
+  s3Key: String,                 // S3 key (if S3)
+  
+  // Metadata
+  uploadedBy: ObjectId,          // Admin who uploaded
+  uploadedAt: Date,              // Upload timestamp
+  description: String,           // File description
+  tags: [String],                // Tags for categorization
+  
+  // Status
+  isPublic: Boolean,             // Public access allowed?
+  removed: Boolean,              // Soft deleted?
+  removedAt: Date,               // Deletion timestamp
+  removedBy: ObjectId            // Admin who deleted
+}
+```
+
+**Supported File Types:**
+- Documents: PDF, Word, Excel
+- Images: JPEG, PNG, GIF, WebP
+- Other: Text, ZIP
+
+**Validation:**
+- File size: Max 10MB (configurable)
+- MIME type: Whitelist only
+- Required: originalName, mimeType, size, entityType, entityId, uploadedBy
+
+**Instance Methods:**
+- `getPublicUrl()` - Get download URL
+- `markAsDeleted(userId)` - Soft delete
+- `format()` - Format for API response
+
+**Static Methods:**
+- `findByEntity(entityType, entityId)` - Get all attachments for entity
+- `findByUser(userId, options)` - Get user's uploads
+- `findOrphaned()` - Find attachments with missing entities
+
+**Usage Example:**
+```javascript
+// Create attachment
+const attachment = await Attachment.create({
+  originalName: 'supplier-license.pdf',
+  mimeType: 'application/pdf',
+  size: 524288,
+  path: './uploads/1234567890-abc.pdf',
+  entityType: 'Supplier',
+  entityId: supplierId,
+  fieldName: 'businessLicense',
+  storageType: 'local',
+  uploadedBy: adminId
+});
+
+// Get all attachments for supplier
+const attachments = await Attachment.findByEntity('Supplier', supplierId);
+
+// Soft delete
+await attachment.markAsDeleted(adminId);
+```
 
 ---
 

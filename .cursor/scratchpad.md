@@ -1,5 +1,13 @@
 # Project Scratchpad
 
+## Current Sprint: Sprint 2 - File Management & Excel Export
+
+**Started:** January 5, 2026  
+**Status:** Planning Complete → Ready for Execution  
+**Mode:** Planner → Executor
+
+---
+
 ## Background and Motivation
 
 The user has requested to formalize the customer requirements document located at `doc/customer-requirements/silverplan.md`. The current document contains procurement management system requirements but has several issues:

@@ -18,6 +18,12 @@ const erpApiRouter = require('./routes/appRoutes/appApi');
 const roleRoutes = require('./routes/roleRoutes');
 const workflowRoutes = require('./routes/workflowRoutes');
 
+// Sprint 2: Attachment routes
+const attachmentRoutes = require('./routes/attachmentRoutes');
+
+// Sprint 3: Supplier routes
+const supplierRoutes = require('./routes/supplierRoutes');
+
 const fileUpload = require('express-fileupload');
 // create our Express app
 const app = express();
@@ -35,8 +41,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
 
-// // default options
-// app.use(fileUpload());
+// File upload middleware - enable for attachments
+app.use(fileUpload({
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+  abortOnLimit: true,
+  createParentPath: true
+}));
 
 // Here our API Routes
 
@@ -45,6 +55,8 @@ app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, roleRoutes);
 app.use('/api', adminAuth.isValidAuthToken, workflowRoutes);
+app.use('/api/attachments', adminAuth.isValidAuthToken, attachmentRoutes);
+app.use('/api/suppliers', adminAuth.isValidAuthToken, supplierRoutes);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 

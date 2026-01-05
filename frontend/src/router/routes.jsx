@@ -29,6 +29,14 @@ const Profile = lazy(() => import('@/pages/Profile'));
 
 const About = lazy(() => import('@/pages/About'));
 
+// Sprint 1: RBAC & Workflow
+const RolePage = lazy(() => import('@/pages/Role'));
+const WorkflowPage = lazy(() => import('@/pages/Workflow'));
+const ApprovalDashboard = lazy(() => import('@/pages/ApprovalDashboard'));
+
+// Sprint 3: Supplier Management
+const SupplierPage = lazy(() => import('@/pages/Supplier'));
+
 let routes = {
   expense: [],
   default: [
@@ -123,6 +131,27 @@ let routes = {
       path: '/profile',
       element: <Profile />,
     },
+    
+    // Sprint 1 Routes
+    {
+      path: '/roles',
+      element: <RolePage />,
+    },
+    {
+      path: '/workflows',
+      element: <WorkflowPage />,
+    },
+    {
+      path: '/approvals',
+      element: <ApprovalDashboard />,
+    },
+    
+    // Sprint 3 Routes
+    {
+      path: '/suppliers',
+      element: <SupplierPage />,
+    },
+    
     {
       path: '*',
       element: <NotFound />,
