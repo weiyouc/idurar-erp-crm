@@ -1,5 +1,5 @@
 import React from 'react';
-import CrudModule from '@/modules/CrudModule';
+import CrudModule from '@/modules/CrudModule/CrudModule';
 import SupplierForm from '@/forms/SupplierForm';
 import { Tag, Space, Button, Tooltip, Popconfirm, message } from 'antd';
 import {
