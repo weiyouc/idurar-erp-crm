@@ -1,0 +1,1355 @@
+{
+  "file_name": "doc/customer-requirements/各报表清单格式 2025.12.23.xlsx",
+  "sheets": [
+    {
+      "sheet_name": "供应商清单",
+      "columns": [
+        {
+          "column_index": 1,
+          "column_letter": "A",
+          "header": "Column_1",
+          "data_type": "text",
+          "sample_values": [
+            "NO#",
+            "例如：",
+            "1"
+          ]
+        },
+        {
+          "column_index": 2,
+          "column_letter": "B",
+          "header": "Column_2",
+          "data_type": "text",
+          "sample_values": [
+            "供應商帳戶",
+            "13",
+            "19"
+          ]
+        },
+        {
+          "column_index": 3,
+          "column_letter": "C",
+          "header": "Column_3",
+          "data_type": "text",
+          "sample_values": [
+            "供应商全稱",
+            "AMPLE KING INDUSTRIALF LTD.佳皇實業",
+            "BIRKO ELECTRONICS COMPNAY 寶高電子"
+          ]
+        },
+        {
+          "column_index": 4,
+          "column_letter": "D",
+          "header": "Column_4",
+          "data_type": "text",
+          "sample_values": [
+            "搜索名稱",
+            "A032",
+            "B009"
+          ]
+        },
+        {
+          "column_index": 5,
+          "column_letter": "E",
+          "header": "Column_5",
+          "data_type": "text",
+          "sample_values": [
+            "簡稱",
+            "佳皇",
+            "寶高"
+          ]
+        },
+        {
+          "column_index": 6,
+          "column_letter": "F",
+          "header": "Column_6",
+          "data_type": "text",
+          "sample_values": [
+            "貨幣",
+            "USD",
+            "HKD"
+          ]
+        },
+        {
+          "column_index": 7,
+          "column_letter": "G",
+          "header": "Column_7",
+          "data_type": "text",
+          "sample_values": [
+            "組",
+            "P04",
+            "P07"
+          ]
+        },
+        {
+          "column_index": 8,
+          "column_letter": "H",
+          "header": "Column_8",
+          "data_type": "text",
+          "sample_values": [
+            "供應物項組",
+            "塑膠原料",
+            "2GX油"
+          ]
+        },
+        {
+          "column_index": 9,
+          "column_letter": "I",
+          "header": "Column_9",
+          "data_type": "text",
+          "sample_values": [
+            "供應商類別",
+            "主料",
+            "主料"
+          ]
+        },
+        {
+          "column_index": 10,
+          "column_letter": "J",
+          "header": "Column_10",
+          "data_type": "text",
+          "sample_values": [
+            "地址",
+            "九龍長沙灣永康街37-39號福源廣場10樓E室（荔枝角地鐵站）",
+            "FLAT N, 4TH FLOOR,LLADRO CENTRE,72 HOI YUEN ROAD, KWUN TONG,KOWLOON"
+          ]
+        },
+        {
+          "column_index": 11,
+          "column_letter": "K",
+          "header": "Column_11",
+          "data_type": "text",
+          "sample_values": [
+            "联系人"
+          ]
+        },
+        {
+          "column_index": 12,
+          "column_letter": "L",
+          "header": "Column_12",
+          "data_type": "text",
+          "sample_values": [
+            "邮箱"
+          ]
+        },
+        {
+          "column_index": 13,
+          "column_letter": "M",
+          "header": "Column_13",
+          "data_type": "text",
+          "sample_values": [
+            "電話",
+            "+852 23809090",
+            "23440626"
+          ]
+        },
+        {
+          "column_index": 14,
+          "column_letter": "N",
+          "header": "Column_14",
+          "data_type": "text",
+          "sample_values": [
+            "分機號"
+          ]
+        },
+        {
+          "column_index": 15,
+          "column_letter": "O",
+          "header": "Column_15",
+          "data_type": "text",
+          "sample_values": [
+            "手機"
+          ]
+        },
+        {
+          "column_index": 16,
+          "column_letter": "P",
+          "header": "Column_16",
+          "data_type": "text",
+          "sample_values": [
+            "傳真號碼"
+          ]
+        },
+        {
+          "column_index": 17,
+          "column_letter": "Q",
+          "header": "Column_17",
+          "data_type": "text",
+          "sample_values": [
+            "WWW 网站"
+          ]
+        },
+        {
+          "column_index": 18,
+          "column_letter": "R",
+          "header": "Column_18",
+          "data_type": "text",
+          "sample_values": [
+            "付款方法"
+          ]
+        },
+        {
+          "column_index": 19,
+          "column_letter": "S",
+          "header": "Column_19",
+          "data_type": "text",
+          "sample_values": [
+            "交货条件"
+          ]
+        },
+        {
+          "column_index": 20,
+          "column_letter": "T",
+          "header": "Column_20",
+          "data_type": "text",
+          "sample_values": [
+            "最後修改人",
+            "S1692",
+            "N0197"
+          ]
+        },
+        {
+          "column_index": 21,
+          "column_letter": "U",
+          "header": "Column_21",
+          "data_type": "text",
+          "sample_values": [
+            "最後修改時間",
+            "2015-12-23 00:00:00",
+            "2010-04-12 00:00:00"
+          ]
+        },
+        {
+          "column_index": 22,
+          "column_letter": "V",
+          "header": "Column_22",
+          "data_type": "text",
+          "sample_values": [
+            "Created Date",
+            "2004-10-29 00:00:00",
+            "2004-10-29 00:00:00"
+          ]
+        },
+        {
+          "column_index": 23,
+          "column_letter": "W",
+          "header": "Column_23",
+          "data_type": "text",
+          "sample_values": [
+            "Created By",
+            "Admin",
+            "Admin"
+          ]
+        },
+        {
+          "column_index": 24,
+          "column_letter": "X",
+          "header": "Column_24",
+          "data_type": "text",
+          "sample_values": [
+            "語言",
+            "en-au",
+            "en-au"
+          ]
+        },
+        {
+          "column_index": 25,
+          "column_letter": "Y",
+          "header": "Column_25",
+          "data_type": "text",
+          "sample_values": [
+            "一次性供貨商",
+            "否",
+            "否"
+          ]
+        },
+        {
+          "column_index": 26,
+          "column_letter": "Z",
+          "header": "Column_26",
+          "data_type": "text",
+          "sample_values": [
+            "稅組",
+            "0.13",
+            "0.13"
+          ]
+        },
+        {
+          "column_index": 27,
+          "column_letter": "AA",
+          "header": "Column_27",
+          "data_type": "text",
+          "sample_values": [
+            "價格內含稅",
+            "是",
+            "是"
+          ]
+        },
+        {
+          "column_index": 28,
+          "column_letter": "AB",
+          "header": "Column_28",
+          "data_type": "text",
+          "sample_values": [
+            "供应商类型",
+            "B",
+            "B"
+          ]
+        }
+      ],
+      "sample_data": [
+        {
+          "Column_1": "NO#",
+          "Column_2": "供應商帳戶",
+          "Column_3": "供应商全稱",
+          "Column_4": "搜索名稱",
+          "Column_5": "簡稱",
+          "Column_6": "貨幣",
+          "Column_7": "組",
+          "Column_8": "供應物項組",
+          "Column_9": "供應商類別",
+          "Column_10": "地址",
+          "Column_11": "联系人",
+          "Column_12": "邮箱",
+          "Column_13": "電話",
+          "Column_14": "分機號",
+          "Column_15": "手機",
+          "Column_16": "傳真號碼",
+          "Column_17": "WWW 网站",
+          "Column_18": "付款方法",
+          "Column_19": "交货条件",
+          "Column_20": "最後修改人",
+          "Column_21": "最後修改時間",
+          "Column_22": "Created Date",
+          "Column_23": "Created By",
+          "Column_24": "語言",
+          "Column_25": "一次性供貨商",
+          "Column_26": "稅組",
+          "Column_27": "價格內含稅",
+          "Column_28": "供应商类型"
+        },
+        {
+          "Column_1": "例如：",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": "",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": "",
+          "Column_18": "",
+          "Column_19": "",
+          "Column_20": "",
+          "Column_21": "",
+          "Column_22": "",
+          "Column_23": "",
+          "Column_24": "",
+          "Column_25": "",
+          "Column_26": "",
+          "Column_27": "",
+          "Column_28": ""
+        },
+        {
+          "Column_1": "1",
+          "Column_2": "13",
+          "Column_3": "AMPLE KING INDUSTRIALF LTD.佳皇實業",
+          "Column_4": "A032",
+          "Column_5": "佳皇",
+          "Column_6": "USD",
+          "Column_7": "P04",
+          "Column_8": "塑膠原料",
+          "Column_9": "主料",
+          "Column_10": "九龍長沙灣永康街37-39號福源廣場10樓E室（荔枝角地鐵站）",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "+852 23809090",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": "",
+          "Column_18": "",
+          "Column_19": "",
+          "Column_20": "S1692",
+          "Column_21": "2015-12-23 00:00:00",
+          "Column_22": "2004-10-29 00:00:00",
+          "Column_23": "Admin",
+          "Column_24": "en-au",
+          "Column_25": "否",
+          "Column_26": "0.13",
+          "Column_27": "是",
+          "Column_28": "B"
+        }
+      ],
+      "total_rows": 5,
+      "total_columns": 28
+    },
+    {
+      "sheet_name": "物料清单",
+      "columns": [
+        {
+          "column_index": 1,
+          "column_letter": "A",
+          "header": "Column_1",
+          "data_type": "text",
+          "sample_values": [
+            "NO#"
+          ]
+        },
+        {
+          "column_index": 2,
+          "column_letter": "B",
+          "header": "Column_2",
+          "data_type": "text",
+          "sample_values": [
+            "物料編號"
+          ]
+        },
+        {
+          "column_index": 3,
+          "column_letter": "C",
+          "header": "Column_3",
+          "data_type": "text",
+          "sample_values": [
+            "   物料描述"
+          ]
+        },
+        {
+          "column_index": 4,
+          "column_letter": "D",
+          "header": "Column_4",
+          "data_type": "text",
+          "sample_values": [
+            "單位"
+          ]
+        },
+        {
+          "column_index": 5,
+          "column_letter": "E",
+          "header": "Column_5",
+          "data_type": "text",
+          "sample_values": [
+            "优选采购单价"
+          ]
+        },
+        {
+          "column_index": 6,
+          "column_letter": "F",
+          "header": "Column_6",
+          "data_type": "text",
+          "sample_values": [
+            "优选供应商"
+          ]
+        },
+        {
+          "column_index": 7,
+          "column_letter": "G",
+          "header": "Column_7",
+          "data_type": "text",
+          "sample_values": [
+            "优选供应商编号"
+          ]
+        },
+        {
+          "column_index": 8,
+          "column_letter": "H",
+          "header": "Column_8",
+          "data_type": "text",
+          "sample_values": [
+            "Lead time"
+          ]
+        },
+        {
+          "column_index": 9,
+          "column_letter": "I",
+          "header": "Column_9",
+          "data_type": "text",
+          "sample_values": [
+            "MOQ"
+          ]
+        },
+        {
+          "column_index": 10,
+          "column_letter": "J",
+          "header": "Column_10",
+          "data_type": "text",
+          "sample_values": [
+            "MPQ"
+          ]
+        },
+        {
+          "column_index": 11,
+          "column_letter": "K",
+          "header": "Column_11",
+          "data_type": "text",
+          "sample_values": [
+            "Last cost"
+          ]
+        },
+        {
+          "column_index": 12,
+          "column_letter": "L",
+          "header": "Column_12",
+          "data_type": "text",
+          "sample_values": [
+            "last buy vendor"
+          ]
+        },
+        {
+          "column_index": 13,
+          "column_letter": "M",
+          "header": "Column_13",
+          "data_type": "text",
+          "sample_values": [
+            "Payment term"
+          ]
+        },
+        {
+          "column_index": 14,
+          "column_letter": "N",
+          "header": "Column_14",
+          "data_type": "text",
+          "sample_values": [
+            "物料类别"
+          ]
+        },
+        {
+          "column_index": 15,
+          "column_letter": "O",
+          "header": "Column_15",
+          "data_type": "text",
+          "sample_values": [
+            "当前仓存数量"
+          ]
+        },
+        {
+          "column_index": 16,
+          "column_letter": "P",
+          "header": "Column_16",
+          "data_type": "text",
+          "sample_values": [
+            "仓位"
+          ]
+        },
+        {
+          "column_index": 17,
+          "column_letter": "Q",
+          "header": "Column_17",
+          "data_type": "text",
+          "sample_values": [
+            "采购员"
+          ]
+        }
+      ],
+      "sample_data": [
+        {
+          "Column_1": "NO#",
+          "Column_2": "物料編號",
+          "Column_3": "   物料描述",
+          "Column_4": "單位",
+          "Column_5": "优选采购单价",
+          "Column_6": "优选供应商",
+          "Column_7": "优选供应商编号",
+          "Column_8": "Lead time",
+          "Column_9": "MOQ",
+          "Column_10": "MPQ",
+          "Column_11": "Last cost",
+          "Column_12": "last buy vendor",
+          "Column_13": "Payment term",
+          "Column_14": "物料类别",
+          "Column_15": "当前仓存数量",
+          "Column_16": "仓位",
+          "Column_17": "采购员"
+        },
+        {
+          "Column_1": "",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": "",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": ""
+        },
+        {
+          "Column_1": "",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": "",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": ""
+        }
+      ],
+      "total_rows": 6,
+      "total_columns": 17
+    },
+    {
+      "sheet_name": "MRP清单",
+      "columns": [
+        {
+          "column_index": 1,
+          "column_letter": "A",
+          "header": "Column_1",
+          "data_type": "text",
+          "sample_values": [
+            "NO#"
+          ]
+        },
+        {
+          "column_index": 2,
+          "column_letter": "B",
+          "header": "Column_2",
+          "data_type": "text",
+          "sample_values": [
+            "生产工厂"
+          ]
+        },
+        {
+          "column_index": 3,
+          "column_letter": "C",
+          "header": "Column_3",
+          "data_type": "text",
+          "sample_values": [
+            "物料编号"
+          ]
+        },
+        {
+          "column_index": 4,
+          "column_letter": "D",
+          "header": "Column_4",
+          "data_type": "text",
+          "sample_values": [
+            "物料名称"
+          ]
+        },
+        {
+          "column_index": 5,
+          "column_letter": "E",
+          "header": "Column_5",
+          "data_type": "text",
+          "sample_values": [
+            "物料类型"
+          ]
+        },
+        {
+          "column_index": 6,
+          "column_letter": "F",
+          "header": "Column_6",
+          "data_type": "text",
+          "sample_values": [
+            "需求日期"
+          ]
+        },
+        {
+          "column_index": 7,
+          "column_letter": "G",
+          "header": "Column_7",
+          "data_type": "text",
+          "sample_values": [
+            "请购数量"
+          ]
+        },
+        {
+          "column_index": 8,
+          "column_letter": "H",
+          "header": "Column_8",
+          "data_type": "text",
+          "sample_values": [
+            "单位"
+          ]
+        },
+        {
+          "column_index": 9,
+          "column_letter": "I",
+          "header": "Column_9",
+          "data_type": "text",
+          "sample_values": [
+            "建议采购时间"
+          ]
+        },
+        {
+          "column_index": 10,
+          "column_letter": "J",
+          "header": "Column_10",
+          "data_type": "text",
+          "sample_values": [
+            "单价(RMB)"
+          ]
+        },
+        {
+          "column_index": 11,
+          "column_letter": "K",
+          "header": "Column_11",
+          "data_type": "text",
+          "sample_values": [
+            "采购金额RMB"
+          ]
+        },
+        {
+          "column_index": 12,
+          "column_letter": "L",
+          "header": "Column_12",
+          "data_type": "text",
+          "sample_values": [
+            "当前仓存数量"
+          ]
+        },
+        {
+          "column_index": 13,
+          "column_letter": "M",
+          "header": "Column_13",
+          "data_type": "text",
+          "sample_values": [
+            "可分配库存"
+          ]
+        },
+        {
+          "column_index": 14,
+          "column_letter": "N",
+          "header": "Column_14",
+          "data_type": "text",
+          "sample_values": [
+            "供应商编号"
+          ]
+        },
+        {
+          "column_index": 15,
+          "column_letter": "O",
+          "header": "Column_15",
+          "data_type": "text",
+          "sample_values": [
+            "供应商名称"
+          ]
+        },
+        {
+          "column_index": 16,
+          "column_letter": "P",
+          "header": "Column_16",
+          "data_type": "text",
+          "sample_values": [
+            "客户订单号"
+          ]
+        },
+        {
+          "column_index": 17,
+          "column_letter": "Q",
+          "header": "Column_17",
+          "data_type": "text",
+          "sample_values": [
+            "客户型号"
+          ]
+        },
+        {
+          "column_index": 18,
+          "column_letter": "R",
+          "header": "Column_18",
+          "data_type": "text",
+          "sample_values": [
+            "OTS"
+          ]
+        },
+        {
+          "column_index": 19,
+          "column_letter": "S",
+          "header": "Column_19",
+          "data_type": "text",
+          "sample_values": [
+            "银图内部SO号"
+          ]
+        },
+        {
+          "column_index": 20,
+          "column_letter": "T",
+          "header": "Column_20",
+          "data_type": "text",
+          "sample_values": [
+            "银图内部型号"
+          ]
+        },
+        {
+          "column_index": 21,
+          "column_letter": "U",
+          "header": "Column_21",
+          "data_type": "text",
+          "sample_values": [
+            "采购员"
+          ]
+        }
+      ],
+      "sample_data": [
+        {
+          "Column_1": "NO#",
+          "Column_2": "生产工厂",
+          "Column_3": "物料编号",
+          "Column_4": "物料名称",
+          "Column_5": "物料类型",
+          "Column_6": "需求日期",
+          "Column_7": "请购数量",
+          "Column_8": "单位",
+          "Column_9": "建议采购时间",
+          "Column_10": "单价(RMB)",
+          "Column_11": "采购金额RMB",
+          "Column_12": "当前仓存数量",
+          "Column_13": "可分配库存",
+          "Column_14": "供应商编号",
+          "Column_15": "供应商名称",
+          "Column_16": "客户订单号",
+          "Column_17": "客户型号",
+          "Column_18": "OTS",
+          "Column_19": "银图内部SO号",
+          "Column_20": "银图内部型号",
+          "Column_21": "采购员"
+        },
+        {
+          "Column_1": "",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": "",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": "",
+          "Column_18": "",
+          "Column_19": "",
+          "Column_20": "",
+          "Column_21": ""
+        },
+        {
+          "Column_1": "",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": "",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": "",
+          "Column_18": "",
+          "Column_19": "",
+          "Column_20": "",
+          "Column_21": ""
+        }
+      ],
+      "total_rows": 4,
+      "total_columns": 21
+    },
+    {
+      "sheet_name": "订单PO清单",
+      "columns": [
+        {
+          "column_index": 1,
+          "column_letter": "A",
+          "header": "Column_1",
+          "data_type": "text",
+          "sample_values": [
+            "NO#",
+            "例如",
+            "1"
+          ]
+        },
+        {
+          "column_index": 2,
+          "column_letter": "B",
+          "header": "Column_2",
+          "data_type": "text",
+          "sample_values": [
+            "公司",
+            "dat"
+          ]
+        },
+        {
+          "column_index": 3,
+          "column_letter": "C",
+          "header": "Column_3",
+          "data_type": "text",
+          "sample_values": [
+            "采購單號",
+            "24000004"
+          ]
+        },
+        {
+          "column_index": 4,
+          "column_letter": "D",
+          "header": "Column_4",
+          "data_type": "text",
+          "sample_values": [
+            "供方號",
+            "178"
+          ]
+        },
+        {
+          "column_index": 5,
+          "column_letter": "E",
+          "header": "Column_5",
+          "data_type": "text",
+          "sample_values": [
+            "供方簡稱",
+            "豐高"
+          ]
+        },
+        {
+          "column_index": 6,
+          "column_letter": "F",
+          "header": "Column_6",
+          "data_type": "text",
+          "sample_values": [
+            "供应商全称"
+          ]
+        },
+        {
+          "column_index": 7,
+          "column_letter": "G",
+          "header": "Column_7",
+          "data_type": "text",
+          "sample_values": [
+            "物料編號",
+            "302-25830003R"
+          ]
+        },
+        {
+          "column_index": 8,
+          "column_letter": "H",
+          "header": "Column_8",
+          "data_type": "text",
+          "sample_values": [
+            "物料名稱",
+            "彩盒(中掛雙插)SP2583/HC244NGB-320B-SR4  120x72x250+30mm  350gsm白底咭+E坑+啞UV+局部光UV+凸字 5C"
+          ]
+        },
+        {
+          "column_index": 9,
+          "column_letter": "I",
+          "header": "Column_9",
+          "data_type": "text",
+          "sample_values": [
+            "采購數量",
+            "5865"
+          ]
+        },
+        {
+          "column_index": 10,
+          "column_letter": "J",
+          "header": "Column_10",
+          "data_type": "text",
+          "sample_values": [
+            "采購單位",
+            "PCS"
+          ]
+        },
+        {
+          "column_index": 11,
+          "column_letter": "K",
+          "header": "Column_11",
+          "data_type": "text",
+          "sample_values": [
+            "采購單價",
+            "2.25"
+          ]
+        },
+        {
+          "column_index": 12,
+          "column_letter": "L",
+          "header": "Column_12",
+          "data_type": "text",
+          "sample_values": [
+            "幣種",
+            "HKD"
+          ]
+        },
+        {
+          "column_index": 13,
+          "column_letter": "M",
+          "header": "Column_13",
+          "data_type": "text",
+          "sample_values": [
+            "采购金额"
+          ]
+        },
+        {
+          "column_index": 14,
+          "column_letter": "N",
+          "header": "Column_14",
+          "data_type": "text",
+          "sample_values": [
+            "已收货数量"
+          ]
+        },
+        {
+          "column_index": 15,
+          "column_letter": "O",
+          "header": "Column_15",
+          "data_type": "text",
+          "sample_values": [
+            "未收货数量"
+          ]
+        },
+        {
+          "column_index": 16,
+          "column_letter": "P",
+          "header": "Column_16",
+          "data_type": "text",
+          "sample_values": [
+            "建單日期",
+            "2024-02-02 00:00:00"
+          ]
+        },
+        {
+          "column_index": 17,
+          "column_letter": "Q",
+          "header": "Column_17",
+          "data_type": "text",
+          "sample_values": [
+            "要求送货日期"
+          ]
+        },
+        {
+          "column_index": 18,
+          "column_letter": "R",
+          "header": "Column_18",
+          "data_type": "text",
+          "sample_values": [
+            "实际收货日期"
+          ]
+        },
+        {
+          "column_index": 19,
+          "column_letter": "S",
+          "header": "Column_19",
+          "data_type": "text",
+          "sample_values": [
+            "采购员",
+            "puysy"
+          ]
+        },
+        {
+          "column_index": 20,
+          "column_letter": "T",
+          "header": "Column_20",
+          "data_type": "text",
+          "sample_values": [
+            "Payment term"
+          ]
+        },
+        {
+          "column_index": 21,
+          "column_letter": "U",
+          "header": "Column_21",
+          "data_type": "text",
+          "sample_values": [
+            "客户订单号"
+          ]
+        },
+        {
+          "column_index": 22,
+          "column_letter": "V",
+          "header": "Column_22",
+          "data_type": "text",
+          "sample_values": [
+            "客户型号"
+          ]
+        },
+        {
+          "column_index": 23,
+          "column_letter": "W",
+          "header": "Column_23",
+          "data_type": "text",
+          "sample_values": [
+            "银图内部SO号"
+          ]
+        },
+        {
+          "column_index": 24,
+          "column_letter": "X",
+          "header": "Column_24",
+          "data_type": "text",
+          "sample_values": [
+            "银图内部型号"
+          ]
+        },
+        {
+          "column_index": 25,
+          "column_letter": "Y",
+          "header": "Column_25",
+          "data_type": "text",
+          "sample_values": [
+            "PO remark"
+          ]
+        }
+      ],
+      "sample_data": [
+        {
+          "Column_1": "NO#",
+          "Column_2": "公司",
+          "Column_3": "采購單號",
+          "Column_4": "供方號",
+          "Column_5": "供方簡稱",
+          "Column_6": "供应商全称",
+          "Column_7": "物料編號",
+          "Column_8": "物料名稱",
+          "Column_9": "采購數量",
+          "Column_10": "采購單位",
+          "Column_11": "采購單價",
+          "Column_12": "幣種",
+          "Column_13": "采购金额",
+          "Column_14": "已收货数量",
+          "Column_15": "未收货数量",
+          "Column_16": "建單日期",
+          "Column_17": "要求送货日期",
+          "Column_18": "实际收货日期",
+          "Column_19": "采购员",
+          "Column_20": "Payment term",
+          "Column_21": "客户订单号",
+          "Column_22": "客户型号",
+          "Column_23": "银图内部SO号",
+          "Column_24": "银图内部型号",
+          "Column_25": "PO remark"
+        },
+        {
+          "Column_1": "例如",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": "",
+          "Column_11": "",
+          "Column_12": "",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "",
+          "Column_17": "",
+          "Column_18": "",
+          "Column_19": "",
+          "Column_20": "",
+          "Column_21": "",
+          "Column_22": "",
+          "Column_23": "",
+          "Column_24": "",
+          "Column_25": ""
+        },
+        {
+          "Column_1": "1",
+          "Column_2": "dat",
+          "Column_3": "24000004",
+          "Column_4": "178",
+          "Column_5": "豐高",
+          "Column_6": "",
+          "Column_7": "302-25830003R",
+          "Column_8": "彩盒(中掛雙插)SP2583/HC244NGB-320B-SR4  120x72x250+30mm  350gsm白底咭+E坑+啞UV+局部光UV+凸字 5C",
+          "Column_9": "5865",
+          "Column_10": "PCS",
+          "Column_11": "2.25",
+          "Column_12": "HKD",
+          "Column_13": "",
+          "Column_14": "",
+          "Column_15": "",
+          "Column_16": "2024-02-02 00:00:00",
+          "Column_17": "",
+          "Column_18": "",
+          "Column_19": "puysy",
+          "Column_20": "",
+          "Column_21": "",
+          "Column_22": "",
+          "Column_23": "",
+          "Column_24": "",
+          "Column_25": ""
+        }
+      ],
+      "total_rows": 4,
+      "total_columns": 25
+    },
+    {
+      "sheet_name": "仓存清单  Inventory list",
+      "columns": [
+        {
+          "column_index": 1,
+          "column_letter": "A",
+          "header": "Column_1",
+          "data_type": "text",
+          "sample_values": [
+            "项次",
+            "例如",
+            "1"
+          ]
+        },
+        {
+          "column_index": 2,
+          "column_letter": "B",
+          "header": "Column_2",
+          "data_type": "text",
+          "sample_values": [
+            "物項編號",
+            "408-00000021C"
+          ]
+        },
+        {
+          "column_index": 3,
+          "column_letter": "C",
+          "header": "Column_3",
+          "data_type": "text",
+          "sample_values": [
+            "物項名稱",
+            "TOA-95PCB板組件(美國版）含1.NTC(樂拓）"
+          ]
+        },
+        {
+          "column_index": 4,
+          "column_letter": "D",
+          "header": "Column_4",
+          "data_type": "text",
+          "sample_values": [
+            "倉位",
+            "ME7"
+          ]
+        },
+        {
+          "column_index": 5,
+          "column_letter": "E",
+          "header": "Column_5",
+          "data_type": "text",
+          "sample_values": [
+            "單位",
+            "PCS"
+          ]
+        },
+        {
+          "column_index": 6,
+          "column_letter": "F",
+          "header": "Column_6",
+          "data_type": "text",
+          "sample_values": [
+            "實際庫存",
+            "9738"
+          ]
+        },
+        {
+          "column_index": 7,
+          "column_letter": "G",
+          "header": "Column_7",
+          "data_type": "text",
+          "sample_values": [
+            "最後交易日",
+            "2025-07-30 00:00:00"
+          ]
+        },
+        {
+          "column_index": 8,
+          "column_letter": "H",
+          "header": "Column_8",
+          "data_type": "text",
+          "sample_values": [
+            "呆滯年數",
+            "0.3"
+          ]
+        },
+        {
+          "column_index": 9,
+          "column_letter": "I",
+          "header": "Column_9",
+          "data_type": "text",
+          "sample_values": [
+            "供应商编号"
+          ]
+        },
+        {
+          "column_index": 10,
+          "column_letter": "J",
+          "header": "Column_10",
+          "data_type": "text",
+          "sample_values": [
+            "供应商名称"
+          ]
+        }
+      ],
+      "sample_data": [
+        {
+          "Column_1": "项次",
+          "Column_2": "物項編號",
+          "Column_3": "物項名稱",
+          "Column_4": "倉位",
+          "Column_5": "單位",
+          "Column_6": "實際庫存",
+          "Column_7": "最後交易日",
+          "Column_8": "呆滯年數",
+          "Column_9": "供应商编号",
+          "Column_10": "供应商名称"
+        },
+        {
+          "Column_1": "例如",
+          "Column_2": "",
+          "Column_3": "",
+          "Column_4": "",
+          "Column_5": "",
+          "Column_6": "",
+          "Column_7": "",
+          "Column_8": "",
+          "Column_9": "",
+          "Column_10": ""
+        },
+        {
+          "Column_1": "1",
+          "Column_2": "408-00000021C",
+          "Column_3": "TOA-95PCB板組件(美國版）含1.NTC(樂拓）",
+          "Column_4": "ME7",
+          "Column_5": "PCS",
+          "Column_6": "9738",
+          "Column_7": "2025-07-30 00:00:00",
+          "Column_8": "0.3",
+          "Column_9": "",
+          "Column_10": ""
+        }
+      ],
+      "total_rows": 7,
+      "total_columns": 10
+    }
+  ]
+}
