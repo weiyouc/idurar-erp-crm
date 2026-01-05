@@ -24,6 +24,10 @@ const attachmentRoutes = require('./routes/attachmentRoutes');
 // Sprint 3: Supplier routes
 const supplierRoutes = require('./routes/supplierRoutes');
 
+// Sprint 4: Material routes
+const materialCategoryRoutes = require('./routes/materialCategoryRoutes');
+const materialRoutes = require('./routes/materialRoutes');
+
 const fileUpload = require('express-fileupload');
 // create our Express app
 const app = express();
@@ -57,6 +61,8 @@ app.use('/api', adminAuth.isValidAuthToken, roleRoutes);
 app.use('/api', adminAuth.isValidAuthToken, workflowRoutes);
 app.use('/api/attachments', adminAuth.isValidAuthToken, attachmentRoutes);
 app.use('/api/suppliers', adminAuth.isValidAuthToken, supplierRoutes);
+app.use('/api/material-categories', adminAuth.isValidAuthToken, materialCategoryRoutes);
+app.use('/api/materials', adminAuth.isValidAuthToken, materialRoutes);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 

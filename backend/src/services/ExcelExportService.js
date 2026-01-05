@@ -442,6 +442,218 @@ class ExcelExportService {
     return map[status] || status;
   }
   
+  /**
+   * Export materials to Excel
+   * 
+   * @param {Array} materials - Array of material documents
+   * @param {Object} [options={}] - Export options
+   * @returns {Promise<Buffer>} Excel file buffer
+   */
+  static async exportMaterials(materials, options = {}) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('物料清单');
+    
+    // Define columns
+    worksheet.columns = [
+      { header: '序号', key: 'index', width: 8 },
+      { header: '物料编号', key: 'materialNumber', width: 15 },
+      { header: '物料名称(中文)', key: 'nameZh', width: 25 },
+      { header: '物料名称(英文)', key: 'nameEn', width: 25 },
+      { header: '物料分类', key: 'category', width: 15 },
+      { header: '物料类型', key: 'type', width: 12 },
+      { header: '状态', key: 'status', width: 10 },
+      { header: '基本单位', key: 'baseUOM', width: 10 },
+      { header: '规格型号', key: 'model', width: 15 },
+      { header: '品牌', key: 'brand', width: 12 },
+      { header: '制造商', key: 'manufacturer', width: 20 },
+      { header: '标准成本', key: 'cost', width: 12 },
+      { header: '币种', key: 'currency', width: 8 },
+      { header: '安全库存', key: 'safetyStock', width: 12 },
+      { header: '再订购点', key: 'reorderPoint', width: 12 },
+      { header: '最小订货量', key: 'minOrderQty', width: 12 },
+      { header: '默认交期(天)', key: 'leadTime', width: 12 },
+      { header: 'HS代码', key: 'hsCode', width: 15 },
+      { header: '备注', key: 'description', width: 30 }
+    ];
+    
+    // Style header row
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    headerRow.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF4472C4' }
+    };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 25;
+    
+    // Add data rows
+    materials.forEach((material, index) => {
+      const category = material.category?.name?.zh || material.category?.code || '-';
+      const nameZh = material.materialName?.zh || '-';
+      const nameEn = material.materialName?.en || '-';
+      
+      worksheet.addRow({
+        index: index + 1,
+        materialNumber: material.materialNumber || '-',
+        nameZh,
+        nameEn,
+        category,
+        type: this._getMaterialTypeText(material.type),
+        status: this._getMaterialStatusText(material.status),
+        baseUOM: material.baseUOM || '-',
+        model: material.model || '-',
+        brand: material.brand || '-',
+        manufacturer: material.manufacturer || '-',
+        cost: material.standardCost || 0,
+        currency: material.currency || 'CNY',
+        safetyStock: material.safetyStock || 0,
+        reorderPoint: material.reorderPoint || 0,
+        minOrderQty: material.minimumOrderQty || 1,
+        leadTime: material.defaultLeadTime || 0,
+        hsCode: material.hsCode || '-',
+        description: material.description || '-'
+      });
+    });
+    
+    // Apply number formatting
+    worksheet.getColumn('cost').numFmt = '¥#,##0.00';
+    worksheet.getColumn('safetyStock').numFmt = '#,##0';
+    worksheet.getColumn('reorderPoint').numFmt = '#,##0';
+    worksheet.getColumn('minOrderQty').numFmt = '#,##0';
+    
+    // Apply borders to all cells
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+      });
+    });
+    
+    // Add auto-filter
+    worksheet.autoFilter = {
+      from: { row: 1, column: 1 },
+      to: { row: 1, column: 19 }
+    };
+    
+    // Generate buffer
+    return await workbook.xlsx.writeBuffer();
+  }
+  
+  /**
+   * Export material categories to Excel
+   * 
+   * @param {Array} categories - Array of category documents
+   * @param {Object} [options={}] - Export options
+   * @returns {Promise<Buffer>} Excel file buffer
+   */
+  static async exportMaterialCategories(categories, options = {}) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('物料分类清单');
+    
+    // Define columns
+    worksheet.columns = [
+      { header: '序号', key: 'index', width: 8 },
+      { header: '分类代码', key: 'code', width: 15 },
+      { header: '分类名称(中文)', key: 'nameZh', width: 25 },
+      { header: '分类名称(英文)', key: 'nameEn', width: 25 },
+      { header: '父分类', key: 'parentCategory', width: 20 },
+      { header: '层级', key: 'level', width: 8 },
+      { header: '路径', key: 'path', width: 30 },
+      { header: '状态', key: 'status', width: 10 },
+      { header: '排序序号', key: 'displayOrder', width: 10 },
+      { header: '描述', key: 'description', width: 30 },
+      { header: '创建日期', key: 'createdAt', width: 15 }
+    ];
+    
+    // Style header row
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    headerRow.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF4472C4' }
+    };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.height = 25;
+    
+    // Add data rows
+    categories.forEach((category, index) => {
+      const nameZh = category.name?.zh || '-';
+      const nameEn = category.name?.en || '-';
+      const parentName = category.parent?.name?.zh || category.parent?.code || '-';
+      
+      worksheet.addRow({
+        index: index + 1,
+        code: category.code || '-',
+        nameZh,
+        nameEn,
+        parentCategory: parentName,
+        level: category.level || 0,
+        path: category.path || '/',
+        status: category.isActive ? '启用' : '停用',
+        displayOrder: category.displayOrder || 0,
+        description: category.description || '-',
+        createdAt: category.createdAt ? category.createdAt.toISOString().split('T')[0] : '-'
+      });
+    });
+    
+    // Apply borders to all cells
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+      });
+    });
+    
+    // Add auto-filter
+    worksheet.autoFilter = {
+      from: { row: 1, column: 1 },
+      to: { row: 1, column: 11 }
+    };
+    
+    // Generate buffer
+    return await workbook.xlsx.writeBuffer();
+  }
+  
+  /**
+   * Get material type text in Chinese
+   * @private
+   */
+  static _getMaterialTypeText(type) {
+    const map = {
+      raw: '原材料',
+      'semi-finished': '半成品',
+      finished: '成品',
+      packaging: '包装材料',
+      consumable: '耗材',
+      other: '其他'
+    };
+    return map[type] || type;
+  }
+  
+  /**
+   * Get material status text in Chinese
+   * @private
+   */
+  static _getMaterialStatusText(status) {
+    const map = {
+      draft: '草稿',
+      active: '启用',
+      obsolete: '停用',
+      discontinued: '已停产'
+    };
+    return map[status] || status;
+  }
+  
 }
 
 module.exports = ExcelExportService;

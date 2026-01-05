@@ -291,8 +291,6 @@ materialCategorySchema.statics.search = function(query) {
  * @returns {Promise<Object>}
  */
 materialCategorySchema.statics.getStatistics = async function() {
-  const Material = mongoose.model('Material');
-  
   const stats = await this.aggregate([
     { $match: { isActive: true } },
     {
@@ -309,18 +307,24 @@ materialCategorySchema.statics.getStatistics = async function() {
     }
   ]);
   
-  // Count materials per category
-  const materialCounts = await Material.aggregate([
-    { $match: { removed: false } },
-    {
-      $group: {
-        _id: '$category',
-        count: { $sum: 1 }
+  // Try to count materials per category (Material model may not be registered yet)
+  let categoriesWithMaterials = 0;
+  try {
+    const Material = mongoose.model('Material');
+    const materialCounts = await Material.aggregate([
+      { $match: { removed: false } },
+      {
+        $group: {
+          _id: '$category',
+          count: { $sum: 1 }
+        }
       }
-    }
-  ]);
-  
-  const categoriesWithMaterials = materialCounts.filter(c => c._id !== null).length;
+    ]);
+    categoriesWithMaterials = materialCounts.filter(c => c._id !== null).length;
+  } catch (error) {
+    // Material model not registered yet, skip this stat
+    categoriesWithMaterials = 0;
+  }
   
   return {
     totalCategories: stats[0]?.total || 0,
@@ -337,13 +341,22 @@ materialCategorySchema.statics.getStatistics = async function() {
  */
 materialCategorySchema.statics.validateNoCircularRef = async function(categoryId, parentId) {
   if (!parentId) return true;
+  
+  // If this is a new category (null ID), no circular reference is possible
+  if (!categoryId) return true;
+  
   if (categoryId.toString() === parentId.toString()) return false;
+  
+  const category = await this.findById(categoryId);
+  if (!category) return false;
   
   const parent = await this.findById(parentId);
   if (!parent) return false;
   
-  // Check if category is in parent's path
-  if (parent.path.includes(categoryId.toString())) {
+  // Check if parent is a descendant of category
+  // (i.e., parent's path starts with category's full path)
+  const categoryFullPath = category.getFullPath();
+  if (parent.path.startsWith(categoryFullPath + '/')) {
     return false;
   }
   

@@ -37,6 +37,10 @@ const ApprovalDashboard = lazy(() => import('@/pages/ApprovalDashboard'));
 // Sprint 3: Supplier Management
 const SupplierPage = lazy(() => import('@/pages/Supplier'));
 
+// Sprint 4: Material Management
+const MaterialPage = lazy(() => import('@/pages/Material'));
+const MaterialCategoryPage = lazy(() => import('@/pages/MaterialCategory'));
+
 let routes = {
   expense: [],
   default: [
@@ -150,6 +154,16 @@ let routes = {
     {
       path: '/suppliers',
       element: <SupplierPage />,
+    },
+    
+    // Sprint 4 Routes
+    {
+      path: '/materials',
+      element: <MaterialPage />,
+    },
+    {
+      path: '/material-categories',
+      element: <MaterialCategoryPage />,
     },
     
     {
