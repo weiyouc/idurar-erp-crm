@@ -31,7 +31,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { request } from '@/request';
-import DataTable from '@/components/DataTable';
+import DataTable from '@/components/DataTable/DataTable';
 import PurchaseOrderForm from '@/forms/PurchaseOrderForm';
 
 const { Option } = Select;
