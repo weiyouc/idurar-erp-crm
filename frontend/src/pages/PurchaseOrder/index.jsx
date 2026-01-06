@@ -1,15 +1,16 @@
 import React from 'react';
-import PageWrapper from '@/components/PageWrapper';
 import PurchaseOrderModule from '@/modules/PurchaseOrderModule';
+import { PageHeader } from '@ant-design/pro-layout';
 
 const PurchaseOrderPage = () => {
   return (
-    <PageWrapper
-      title="Purchase Orders"
-      description="Manage purchase orders, submit for approval, and track order status"
-    >
+    <div>
+      <PageHeader
+        title="Purchase Order Management"
+        subTitle="Manage purchase orders, submit for approval, and track order status"
+      />
       <PurchaseOrderModule />
-    </PageWrapper>
+    </div>
   );
 };
 
