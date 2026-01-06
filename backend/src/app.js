@@ -28,6 +28,9 @@ const supplierRoutes = require('./routes/supplierRoutes');
 const materialCategoryRoutes = require('./routes/materialCategoryRoutes');
 const materialRoutes = require('./routes/materialRoutes');
 
+// Sprint 5: Purchase Order routes
+const purchaseOrderRoutes = require('./routes/purchaseOrderRoutes');
+
 const fileUpload = require('express-fileupload');
 // create our Express app
 const app = express();
@@ -63,6 +66,7 @@ app.use('/api/attachments', adminAuth.isValidAuthToken, attachmentRoutes);
 app.use('/api/suppliers', adminAuth.isValidAuthToken, supplierRoutes);
 app.use('/api/material-categories', adminAuth.isValidAuthToken, materialCategoryRoutes);
 app.use('/api/materials', adminAuth.isValidAuthToken, materialRoutes);
+app.use('/api/purchase-orders', adminAuth.isValidAuthToken, purchaseOrderRoutes);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 

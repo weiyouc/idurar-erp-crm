@@ -41,6 +41,9 @@ const SupplierPage = lazy(() => import('@/pages/Supplier'));
 const MaterialPage = lazy(() => import('@/pages/Material'));
 const MaterialCategoryPage = lazy(() => import('@/pages/MaterialCategory'));
 
+// Sprint 5: Purchase Order Management
+const PurchaseOrderPage = lazy(() => import('@/pages/PurchaseOrder'));
+
 let routes = {
   expense: [],
   default: [
@@ -164,6 +167,12 @@ let routes = {
     {
       path: '/material-categories',
       element: <MaterialCategoryPage />,
+    },
+    
+    // Sprint 5 Routes
+    {
+      path: '/purchase-orders',
+      element: <PurchaseOrderPage />,
     },
     
     {
