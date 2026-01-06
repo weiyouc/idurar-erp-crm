@@ -22,7 +22,7 @@ import {
   SaveOutlined,
   CloseOutlined
 } from '@ant-design/icons';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { request } from '@/request';
 
 const { TextArea } = Input;
@@ -70,8 +70,8 @@ const PurchaseOrderForm = ({ current, onSuccess, onCancel }) => {
   const initializeForm = (data) => {
     form.setFieldsValue({
       ...data,
-      orderDate: data.orderDate ? moment(data.orderDate) : null,
-      expectedDeliveryDate: data.expectedDeliveryDate ? moment(data.expectedDeliveryDate) : null,
+      orderDate: data.orderDate ? dayjs(data.orderDate) : null,
+      expectedDeliveryDate: data.expectedDeliveryDate ? dayjs(data.expectedDeliveryDate) : null,
       supplier: data.supplier?._id || data.supplier
     });
     
@@ -295,8 +295,8 @@ const PurchaseOrderForm = ({ current, onSuccess, onCancel }) => {
       initialValues={{
         currency: 'USD',
         status: 'draft',
-        orderDate: moment(),
-        expectedDeliveryDate: moment().add(7, 'days')
+        orderDate: dayjs(),
+        expectedDeliveryDate: dayjs().add(7, 'days')
       }}
     >
       {current?.poNumber && (

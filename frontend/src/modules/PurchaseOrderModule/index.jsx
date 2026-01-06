@@ -29,7 +29,7 @@ import {
   FileExcelOutlined,
   FilePdfOutlined
 } from '@ant-design/icons';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { request } from '@/request';
 import DataTable from '@/components/DataTable';
 import PurchaseOrderForm from '@/forms/PurchaseOrderForm';
@@ -259,14 +259,14 @@ const PurchaseOrderModule = () => {
       key: 'orderDate',
       width: 120,
       sorter: true,
-      render: (date) => date ? moment(date).format('YYYY-MM-DD') : '-'
+      render: (date) => date ? dayjs(date).format('YYYY-MM-DD') : '-'
     },
     {
       title: 'Delivery Date',
       dataIndex: 'expectedDeliveryDate',
       key: 'expectedDeliveryDate',
       width: 120,
-      render: (date) => date ? moment(date).format('YYYY-MM-DD') : '-'
+      render: (date) => date ? dayjs(date).format('YYYY-MM-DD') : '-'
     },
     {
       title: 'Total Amount',
