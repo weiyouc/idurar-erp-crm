@@ -31,7 +31,7 @@ import {
   SearchOutlined,
   DollarOutlined,
   ShoppingCartOutlined,
-  CompareOutlined
+  SwapOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { request } from '@/request';
@@ -359,7 +359,7 @@ const MaterialQuotationModule = () => {
               <>
                 <Menu.Item
                   key="compare"
-                  icon={<CompareOutlined />}
+                  icon={<SwapOutlined />}
                   onClick={() => handleCompare(record)}
                 >
                   Compare Quotes
