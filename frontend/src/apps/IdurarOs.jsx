@@ -11,13 +11,13 @@ import { notification } from 'antd';
 const ErpApp = lazy(() => import('./ErpApp'));
 
 const DefaultApp = () => (
-  <Localization>
-    <AppContextProvider>
+  <AppContextProvider>
+    <Localization>
       <Suspense fallback={<PageLoader />}>
         <ErpApp />
       </Suspense>
-    </AppContextProvider>
-  </Localization>
+    </Localization>
+  </AppContextProvider>
 );
 
 export default function IdurarOs() {
@@ -63,9 +63,11 @@ export default function IdurarOs() {
 
   if (!isLoggedIn)
     return (
-      <Localization>
-        <AuthRouter />
-      </Localization>
+      <AppContextProvider>
+        <Localization>
+          <AuthRouter />
+        </Localization>
+      </AppContextProvider>
     );
   else {
     return <DefaultApp />;
