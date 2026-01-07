@@ -128,9 +128,9 @@ class SupplierService {
         query['creditInfo.creditRating'] = filters.creditRating;
       }
       
-      if (filters.search) {
+      if (filters.search && filters.search.trim()) {
         // Search on company names, supplier number, and abbreviation using regex
-        const searchRegex = new RegExp(filters.search, 'i');
+        const searchRegex = new RegExp(filters.search.trim(), 'i');
         query.$or = [
           { 'companyName.zh': searchRegex },
           { 'companyName.en': searchRegex },
@@ -146,11 +146,13 @@ class SupplierService {
       const skip = (page - 1) * items;
       const pages = Math.ceil(total / items);
       
-      // Build sort
+      // Build sort - default to createdAt if invalid field
       const sort = {};
-      sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+      const validSortFields = ['createdAt', 'updatedAt', 'supplierNumber', 'status', 'type'];
+      const safeSortBy = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
+      sort[safeSortBy] = sortOrder === 'desc' ? -1 : 1;
       
-      // Execute query
+      // Execute query - populate will return null if references don't exist (won't throw error)
       const suppliers = await Supplier.find(query)
         .sort(sort)
         .skip(skip)
@@ -158,9 +160,15 @@ class SupplierService {
         .populate('createdBy', 'name email')
         .populate('updatedBy', 'name email');
       
+      // Convert Mongoose documents to plain objects for JSON serialization
+      const suppliersData = suppliers.map(supplier => {
+        const supplierObj = supplier.toObject ? supplier.toObject() : supplier;
+        return supplierObj;
+      });
+      
       return {
         success: true,
-        result: suppliers,
+        result: suppliersData,
         pagination: {
           page: parseInt(page),
           pages,

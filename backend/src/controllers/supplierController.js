@@ -98,9 +98,11 @@ exports.list = async (req, res) => {
     return res.status(200).json(result);
   } catch (error) {
     console.error('List suppliers error:', error);
+    console.error('Error stack:', error.stack);
     return res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
+      error: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
