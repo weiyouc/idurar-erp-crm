@@ -91,7 +91,7 @@ function Sidebar({ collapsible, isMobile = false }) {
     },
     {
       key: 'procurement',
-      label: 'Procurement',
+      label: <span style={{ cursor: 'default' }}>Procurement</span>,
       icon: <ShoppingCartOutlined />,
       children: [
         {
@@ -187,6 +187,13 @@ function Sidebar({ collapsible, isMobile = false }) {
         mode="inline"
         theme={'light'}
         selectedKeys={[currentPath]}
+        onClick={(e) => {
+          // Prevent navigation for parent menu items (procurement)
+          if (e.key === 'procurement') {
+            e.domEvent?.preventDefault();
+            return;
+          }
+        }}
         style={{
           width: 256,
         }}

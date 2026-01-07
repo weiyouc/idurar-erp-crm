@@ -3,6 +3,9 @@ import { UploadOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons'
 import { message, Upload, Button, Switch } from 'antd';
 
 import useLanguage from '@/locale/useLanguage';
+import { useAppContext } from '@/context/appContext';
+
+const { Option } = Select;
 
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -18,6 +21,14 @@ const beforeUpload = (file) => {
 
 export default function AdminForm({ isUpdateForm = false }) {
   const translate = useLanguage();
+  const { state, appContextAction } = useAppContext();
+
+  const handleLanguageChange = (value) => {
+    appContextAction.language.change(value);
+    // Trigger a re-render by reloading the page
+    window.location.reload();
+  };
+
   return (
     <>
       <Form.Item
@@ -55,6 +66,13 @@ export default function AdminForm({ isUpdateForm = false }) {
         ]}
       >
         <Input autoComplete="off" />
+      </Form.Item>
+
+      <Form.Item label={translate('language')} name="language" initialValue={state.language}>
+        <Select onChange={handleLanguageChange} style={{ width: '100%' }}>
+          <Option value="en_us">English (US)</Option>
+          <Option value="zh_cn">中文 (简体)</Option>
+        </Select>
       </Form.Item>
 
       <Form.Item

@@ -3,6 +3,7 @@ import * as actionTypes from './types';
 export const initialState = {
   isNavMenuClose: false,
   currentApp: 'default',
+  language: localStorage.getItem('language') || 'en_us',
 };
 
 export function contextReducer(state, action) {
@@ -31,6 +32,12 @@ export function contextReducer(state, action) {
       return {
         ...state,
         currentApp: 'default',
+      };
+    case actionTypes.CHANGE_LANGUAGE:
+      localStorage.setItem('language', action.payload);
+      return {
+        ...state,
+        language: action.payload,
       };
 
     default: {

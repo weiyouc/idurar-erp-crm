@@ -21,6 +21,11 @@ const contextActions = (dispatch) => {
         dispatch({ type: actionTypes.DEFAULT_APP });
       },
     },
+    language: {
+      change: (languageCode) => {
+        dispatch({ type: actionTypes.CHANGE_LANGUAGE, payload: languageCode });
+      },
+    },
   };
 };
 
