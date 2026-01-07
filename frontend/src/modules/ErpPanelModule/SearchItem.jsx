@@ -9,6 +9,7 @@ import { useErpContext } from '@/context/erp';
 import { selectSearchedItems } from '@/redux/erp/selectors';
 
 import { Empty } from 'antd';
+import { get } from '@/utils/helpers';
 
 export default function Search({ config }) {
   let { entity, searchConfig } = config;
@@ -68,13 +69,22 @@ export default function Search({ config }) {
   useEffect(() => {
     let optionResults = [];
 
-    result.map((item) => {
-      const labels = displayLabels.map((x) => item[x]).join(' ');
-      optionResults.push({ label: labels, value: item[outputValue] });
-    });
+    if (result && Array.isArray(result) && displayLabels && Array.isArray(displayLabels)) {
+      result.map((item) => {
+        const labels = displayLabels
+          .filter(x => x && typeof x === 'string')
+          .map((x) => {
+            const value = get(item, x);
+            return value != null ? String(value) : '';
+          })
+          .filter(Boolean)
+          .join(' ');
+        optionResults.push({ label: labels, value: item[outputValue] });
+      });
+    }
 
     setOptions(optionResults);
-  }, [result]);
+  }, [result, displayLabels, outputValue]);
 
   return (
     <AutoComplete

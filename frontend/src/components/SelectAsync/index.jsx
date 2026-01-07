@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { generate as uniqueId } from 'shortid';
 import color from '@/utils/color';
 import useLanguage from '@/locale/useLanguage';
+import { get } from '@/utils/helpers';
 
 const SelectAsync = ({
   entity,
@@ -33,7 +34,17 @@ const SelectAsync = ({
   }, [isSuccess]);
 
   const labels = (optionField) => {
-    return displayLabels.map((x) => optionField[x]).join(' ');
+    if (!optionField || !displayLabels || !Array.isArray(displayLabels)) {
+      return '';
+    }
+    return displayLabels
+      .filter(x => x && typeof x === 'string')
+      .map((x) => {
+        const value = get(optionField, x);
+        return value != null ? String(value) : '';
+      })
+      .filter(Boolean)
+      .join(' ');
   };
   useEffect(() => {
     if (value !== undefined) {

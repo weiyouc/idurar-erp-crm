@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Select, Empty } from 'antd';
 import useLanguage from '@/locale/useLanguage';
+import { get } from '@/utils/helpers';
 
 export default function AutoCompleteAsync({
   entity,
@@ -68,7 +69,17 @@ export default function AutoCompleteAsync({
   let { onFetch, result, isSuccess, isLoading } = useOnFetch();
 
   const labels = (optionField) => {
-    return displayLabels.map((x) => optionField[x]).join(' ');
+    if (!optionField || !displayLabels || !Array.isArray(displayLabels)) {
+      return '';
+    }
+    return displayLabels
+      .filter(x => x && typeof x === 'string')
+      .map((x) => {
+        const value = get(optionField, x);
+        return value != null ? String(value) : '';
+      })
+      .filter(Boolean)
+      .join(' ');
   };
 
   useEffect(() => {
