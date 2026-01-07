@@ -41,11 +41,18 @@ function SearchItemComponent({ config, onRerender }) {
   );
 
   const labels = (optionField) => {
-    return displayLabels.map((x) => {
-      // Handle nested properties (e.g., 'companyName.zh')
-      const value = get(optionField, x);
-      return value || '';
-    }).filter(Boolean).join(' ');
+    if (!optionField || !displayLabels || !Array.isArray(displayLabels)) {
+      return '';
+    }
+    return displayLabels
+      .filter(x => x && typeof x === 'string') // Only process valid string labels
+      .map((x) => {
+        // Handle nested properties (e.g., 'companyName.zh')
+        const value = get(optionField, x);
+        return value != null ? String(value) : '';
+      })
+      .filter(Boolean)
+      .join(' ');
   };
 
   useEffect(() => {

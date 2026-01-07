@@ -50,19 +50,41 @@ const checkPermission = (resource, action, scope = 'own', context = {}) => {
       
       // Populate roles if needed
       let userRoles = req.admin.roles;
-      if (userRoles[0] && typeof userRoles[0] !== 'object') {
-        const Admin = require('../../models/coreModels/Admin');
-        const populatedAdmin = await Admin.findById(req.admin._id).populate({
-          path: 'roles',
-          populate: { path: 'permissions' }
+      if (!userRoles || userRoles.length === 0) {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied: No roles assigned'
         });
-        userRoles = populatedAdmin.roles;
+      }
+      
+      // Always populate roles to ensure we have full role objects
+      const Admin = require('../../models/coreModels/Admin');
+      const populatedAdmin = await Admin.findById(req.admin._id).populate({
+        path: 'roles',
+        populate: { path: 'permissions' }
+      });
+      userRoles = populatedAdmin.roles || [];
+      
+      if (userRoles.length === 0) {
+        console.error(`[checkPermission] User ${req.admin._id} (${req.admin.email}) has no roles assigned`);
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied: No roles assigned'
+        });
       }
       
       // Check if user has system_administrator role - grant all permissions
-      const roleNames = userRoles.map(r => r.name || (typeof r === 'string' ? r : r.toString()));
+      const roleNames = userRoles.map(r => {
+        if (typeof r === 'string') return r;
+        if (r && r.name) return r.name;
+        return null;
+      }).filter(Boolean);
+      
+      console.log(`[checkPermission] User ${req.admin._id} (${req.admin.email}) has roles:`, roleNames);
+      
       if (roleNames.includes('system_administrator')) {
         // System administrator has all permissions, skip permission check
+        console.log(`[checkPermission] System administrator detected, granting access to ${resource}:${action}`);
         req.permission = {
           resource,
           action,

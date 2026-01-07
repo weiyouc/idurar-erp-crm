@@ -1,4 +1,7 @@
 export function get(obj, key) {
+  if (!key || typeof key !== 'string') {
+    return undefined;
+  }
   return key.split('.').reduce(function (o, x) {
     return o === undefined || o === null ? o : o[x];
   }, obj);
