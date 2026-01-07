@@ -15,6 +15,7 @@ import { selectCurrentItem } from '@/redux/crud/selectors';
 import useLanguage from '@/locale/useLanguage';
 import { crud } from '@/redux/crud/actions';
 import { useCrudContext } from '@/context/crud';
+import { get } from '@/utils/helpers';
 
 import { CrudLayout } from '@/layout';
 
@@ -30,12 +31,21 @@ function SidePanelTopContent({ config, formElements, withUpload }) {
 
   const [labels, setLabels] = useState('');
   useEffect(() => {
-    if (currentItem) {
-      const currentlabels = deleteModalLabels.map((x) => currentItem[x]).join(' ');
+    if (currentItem && deleteModalLabels && Array.isArray(deleteModalLabels)) {
+      const currentlabels = deleteModalLabels
+        .filter(x => x && typeof x === 'string')
+        .map((x) => {
+          const value = get(currentItem, x);
+          return value != null ? String(value) : '';
+        })
+        .filter(Boolean)
+        .join(' ');
 
       setLabels(currentlabels);
+    } else {
+      setLabels('');
     }
-  }, [currentItem]);
+  }, [currentItem, deleteModalLabels]);
 
   const removeItem = () => {
     dispatch(crud.currentAction({ actionType: 'delete', data: currentItem }));

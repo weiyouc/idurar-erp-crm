@@ -43,6 +43,9 @@ export function has(obj, key) {
  convert indexes to properties
 */
 export function valueByString(obj, string, devider) {
+  if (!string || typeof string !== 'string') {
+    return '';
+  }
   if (devider === undefined) {
     devider = '|';
   }
@@ -51,6 +54,7 @@ export function valueByString(obj, string, devider) {
     .map(function (key) {
       return get(obj, key);
     })
+    .filter(Boolean)
     .join(' ');
 }
 
