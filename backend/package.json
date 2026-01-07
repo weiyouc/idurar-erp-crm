@@ -16,7 +16,10 @@
     "test": "jest --runInBand --detectOpenHandles --forceExit",
     "test:watch": "jest --watch --runInBand",
     "test:coverage": "jest --coverage --runInBand --detectOpenHandles --forceExit",
-    "test:models": "jest tests/models --runInBand --detectOpenHandles --forceExit"
+    "test:models": "jest tests/models --runInBand --detectOpenHandles --forceExit",
+    "test:integration": "jest tests/integration --runInBand --detectOpenHandles --forceExit",
+    "test:rbac": "jest tests/integration/rbac-e2e.test.js --runInBand --detectOpenHandles --forceExit",
+    "test:supplier-api": "jest tests/integration/supplier-api-e2e.test.js --runInBand --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.509.0",
