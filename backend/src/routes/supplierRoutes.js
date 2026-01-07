@@ -43,6 +43,12 @@ router.post(
 );
 
 router.get(
+  '/list',
+  checkPermission('supplier', 'read'),
+  catchErrors(supplierController.list)
+);
+
+router.get(
   '/',
   checkPermission('supplier', 'read'),
   catchErrors(supplierController.list)

@@ -10,6 +10,7 @@ import { crud } from '@/redux/crud/actions';
 
 import { useCrudContext } from '@/context/crud';
 import { selectSearchedItems } from '@/redux/crud/selectors';
+import { get } from '@/utils/helpers';
 
 function SearchItemComponent({ config, onRerender }) {
   let { entity, searchConfig } = config;
@@ -40,7 +41,11 @@ function SearchItemComponent({ config, onRerender }) {
   );
 
   const labels = (optionField) => {
-    return displayLabels.map((x) => optionField[x]).join(' ');
+    return displayLabels.map((x) => {
+      // Handle nested properties (e.g., 'companyName.zh')
+      const value = get(optionField, x);
+      return value || '';
+    }).filter(Boolean).join(' ');
   };
 
   useEffect(() => {

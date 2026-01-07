@@ -129,8 +129,14 @@ class SupplierService {
       }
       
       if (filters.search) {
-        // Full-text search on company names
-        query.$text = { $search: filters.search };
+        // Search on company names, supplier number, and abbreviation using regex
+        const searchRegex = new RegExp(filters.search, 'i');
+        query.$or = [
+          { 'companyName.zh': searchRegex },
+          { 'companyName.en': searchRegex },
+          { supplierNumber: searchRegex },
+          { abbreviation: searchRegex }
+        ];
       }
       
       // Count total
