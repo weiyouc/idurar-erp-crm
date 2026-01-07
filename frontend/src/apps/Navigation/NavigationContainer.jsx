@@ -25,6 +25,11 @@ import {
   FilterOutlined,
   WalletOutlined,
   ReconciliationOutlined,
+  TeamOutlined,
+  AppstoreOutlined,
+  ShoppingCartOutlined,
+  InboxOutlined,
+  DollarOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -83,6 +88,43 @@ function Sidebar({ collapsible, isMobile = false }) {
       key: 'taxes',
       label: <Link to={'/taxes'}>{translate('taxes')}</Link>,
       icon: <ShopOutlined />,
+    },
+    {
+      key: 'procurement',
+      label: 'Procurement',
+      icon: <ShoppingCartOutlined />,
+      children: [
+        {
+          key: 'suppliers',
+          label: <Link to={'/suppliers'}>Suppliers</Link>,
+          icon: <TeamOutlined />,
+        },
+        {
+          key: 'materials',
+          label: <Link to={'/materials'}>Materials</Link>,
+          icon: <AppstoreOutlined />,
+        },
+        {
+          key: 'material-categories',
+          label: <Link to={'/material-categories'}>Material Categories</Link>,
+          icon: <TagsOutlined />,
+        },
+        {
+          key: 'material-quotations',
+          label: <Link to={'/material-quotations'}>Material Quotations</Link>,
+          icon: <DollarOutlined />,
+        },
+        {
+          key: 'purchase-orders',
+          label: <Link to={'/purchase-orders'}>Purchase Orders</Link>,
+          icon: <FileOutlined />,
+        },
+        {
+          key: 'goods-receipts',
+          label: <Link to={'/goods-receipts'}>Goods Receipts</Link>,
+          icon: <InboxOutlined />,
+        },
+      ],
     },
     {
       key: 'generalSettings',
