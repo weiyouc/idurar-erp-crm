@@ -654,6 +654,125 @@ class ExcelExportService {
     return map[status] || status;
   }
   
+  /**
+   * Export goods receipts to Excel
+   */
+  static async exportGoodsReceipts(receipts, options = {}) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('收货单清单');
+    
+    // Define columns
+    worksheet.columns = [
+      { header: '收货单号', key: 'receiptNumber', width: 20 },
+      { header: '采购订单号', key: 'poNumber', width: 20 },
+      { header: '供应商', key: 'supplierName', width: 25 },
+      { header: '收货日期', key: 'receiptDate', width: 15 },
+      { header: '状态', key: 'status', width: 12 },
+      { header: '已收数量', key: 'totalReceived', width: 12 },
+      { header: '合格数量', key: 'totalAccepted', width: 12 },
+      { header: '不合格数量', key: 'totalRejected', width: 12 },
+      { header: '完成率', key: 'completionPercentage', width: 12 },
+      { header: '合格率', key: 'acceptanceRate', width: 12 },
+      { header: '质检结果', key: 'qualityResult', width: 15 },
+      { header: '创建人', key: 'createdBy', width: 15 },
+      { header: '创建时间', key: 'createdAt', width: 18 },
+      { header: '备注', key: 'notes', width: 30 }
+    ];
+    
+    // Style header row
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFE0E0E0' }
+    };
+    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+    
+    // Add data
+    receipts.forEach(receipt => {
+      const row = worksheet.addRow({
+        receiptNumber: receipt.receiptNumber,
+        poNumber: receipt.poNumber,
+        supplierName: receipt.supplier?.companyName?.zh || receipt.supplier?.companyName?.en || '',
+        receiptDate: receipt.receiptDate ? this._formatDate(receipt.receiptDate) : '',
+        status: this._getReceiptStatusText(receipt.status),
+        totalReceived: receipt.totalReceived || 0,
+        totalAccepted: receipt.totalAccepted || 0,
+        totalRejected: receipt.totalRejected || 0,
+        completionPercentage: `${receipt.completionPercentage || 0}%`,
+        acceptanceRate: `${receipt.acceptanceRate || 0}%`,
+        qualityResult: this._getQualityResultText(receipt.qualityInspection?.result),
+        createdBy: receipt.createdBy?.name || '',
+        createdAt: receipt.createdAt ? this._formatDateTime(receipt.createdAt) : '',
+        notes: receipt.notes || ''
+      });
+      
+      // Color code by status
+      if (receipt.status === 'completed') {
+        row.getCell('status').fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFD4EDDA' }
+        };
+      } else if (receipt.status === 'cancelled') {
+        row.getCell('status').fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFF8D7DA' }
+        };
+      }
+      
+      // Center align numeric columns
+      row.getCell('totalReceived').alignment = { horizontal: 'center' };
+      row.getCell('totalAccepted').alignment = { horizontal: 'center' };
+      row.getCell('totalRejected').alignment = { horizontal: 'center' };
+      row.getCell('completionPercentage').alignment = { horizontal: 'center' };
+      row.getCell('acceptanceRate').alignment = { horizontal: 'center' };
+    });
+    
+    // Add borders to all cells
+    worksheet.eachRow((row, rowNumber) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+      });
+    });
+    
+    return workbook;
+  }
+  
+  /**
+   * Get receipt status text in Chinese
+   * @private
+   */
+  static _getReceiptStatusText(status) {
+    const map = {
+      draft: '草稿',
+      completed: '已完成',
+      cancelled: '已取消'
+    };
+    return map[status] || status;
+  }
+  
+  /**
+   * Get quality result text in Chinese
+   * @private
+   */
+  static _getQualityResultText(result) {
+    if (!result) return '未检验';
+    const map = {
+      pending: '待检验',
+      passed: '合格',
+      failed: '不合格',
+      partial: '部分合格'
+    };
+    return map[result] || result;
+  }
+  
 }
 
 module.exports = ExcelExportService;

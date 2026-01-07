@@ -44,6 +44,10 @@ const MaterialCategoryPage = lazy(() => import('@/pages/MaterialCategory'));
 // Sprint 5: Purchase Order Management
 const PurchaseOrderPage = lazy(() => import('@/pages/PurchaseOrder'));
 
+// Sprint 6: Goods Receipt & Material Quotation
+const GoodsReceiptPage = lazy(() => import('@/pages/GoodsReceipt'));
+const MaterialQuotationPage = lazy(() => import('@/pages/MaterialQuotation'));
+
 let routes = {
   expense: [],
   default: [
@@ -173,6 +177,16 @@ let routes = {
     {
       path: '/purchase-orders',
       element: <PurchaseOrderPage />,
+    },
+    
+    // Sprint 6 Routes
+    {
+      path: '/goods-receipts',
+      element: <GoodsReceiptPage />,
+    },
+    {
+      path: '/material-quotations',
+      element: <MaterialQuotationPage />,
     },
     
     {

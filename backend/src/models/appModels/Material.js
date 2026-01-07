@@ -201,6 +201,40 @@ const materialSchema = new Schema({
     ref: 'Attachment'
   }],
   
+  // Inventory tracking
+  inventory: {
+    onHand: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    onOrder: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    available: {
+      type: Number,
+      default: 0
+    },
+    reserved: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    safetyStock: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    reorderPoint: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    lastReceiptDate: Date
+  },
+  
   // Metadata
   createdBy: {
     type: Schema.ObjectId,

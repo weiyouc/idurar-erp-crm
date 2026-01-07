@@ -31,6 +31,12 @@ const materialRoutes = require('./routes/materialRoutes');
 // Sprint 5: Purchase Order routes
 const purchaseOrderRoutes = require('./routes/purchaseOrderRoutes');
 
+// Sprint 6: Goods Receipt routes
+const goodsReceiptRoutes = require('./routes/goodsReceiptRoutes');
+
+// Sprint 6: Material Quotation routes
+const materialQuotationRoutes = require('./routes/materialQuotationRoutes');
+
 const fileUpload = require('express-fileupload');
 // create our Express app
 const app = express();
@@ -67,6 +73,8 @@ app.use('/api/suppliers', adminAuth.isValidAuthToken, supplierRoutes);
 app.use('/api/material-categories', adminAuth.isValidAuthToken, materialCategoryRoutes);
 app.use('/api/materials', adminAuth.isValidAuthToken, materialRoutes);
 app.use('/api/purchase-orders', adminAuth.isValidAuthToken, purchaseOrderRoutes);
+app.use('/api/goods-receipts', adminAuth.isValidAuthToken, goodsReceiptRoutes);
+app.use('/api/material-quotations', adminAuth.isValidAuthToken, materialQuotationRoutes);
 app.use('/download', coreDownloadRouter);
 app.use('/public', corePublicRouter);
 
