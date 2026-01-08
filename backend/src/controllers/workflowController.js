@@ -54,7 +54,7 @@ exports.listWorkflows = async (req, res) => {
     
     res.json({
       success: true,
-      data: workflows,
+      result: workflows,
       count: workflows.length
     });
   } catch (error) {
@@ -88,7 +88,7 @@ exports.getWorkflow = async (req, res) => {
     
     res.json({
       success: true,
-      data: workflow
+      result: workflow
     });
   } catch (error) {
     console.error('Error getting workflow:', error);

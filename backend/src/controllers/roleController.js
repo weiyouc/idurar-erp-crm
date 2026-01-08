@@ -53,7 +53,7 @@ exports.list = async (req, res) => {
     
     res.json({
       success: true,
-      data: roles,
+      result: roles,
       count: roles.length
     });
   } catch (error) {
@@ -87,7 +87,7 @@ exports.getById = async (req, res) => {
     
     res.json({
       success: true,
-      data: role
+      result: role
     });
   } catch (error) {
     console.error('Error getting role:', error);

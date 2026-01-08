@@ -107,8 +107,8 @@ class MaterialCategoryService {
       const {
         page = 1,
         items = 50,
-        sortBy = 'displayOrder',
-        sortOrder = 'asc'
+        sortBy = 'createdAt',
+        sortOrder = 'desc'
       } = options;
       
       // Build query
@@ -143,9 +143,11 @@ class MaterialCategoryService {
       const skip = (page - 1) * items;
       const pages = Math.ceil(total / items);
       
-      // Build sort
+      // Build sort - validate sort field exists
+      const validSortFields = ['createdAt', 'updatedAt', 'code', 'name', 'level', 'displayOrder'];
+      const safeSortBy = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
       const sort = {};
-      sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+      sort[safeSortBy] = sortOrder === 'desc' ? -1 : 1;
       
       // Execute query
       const categories = await MaterialCategory.find(query)

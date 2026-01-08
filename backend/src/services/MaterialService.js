@@ -148,9 +148,11 @@ class MaterialService {
       const skip = (page - 1) * items;
       const pages = Math.ceil(total / items);
       
-      // Build sort
+      // Build sort - validate sort field exists
+      const validSortFields = ['createdAt', 'updatedAt', 'materialNumber', 'materialName', 'status', 'type'];
+      const safeSortBy = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
       const sort = {};
-      sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+      sort[safeSortBy] = sortOrder === 'desc' ? -1 : 1;
       
       // Execute query
       const materials = await Material.find(query)
