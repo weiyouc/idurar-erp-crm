@@ -6,3 +6,7 @@ notes.md
 .env.local
 
 *.pdf
+
+# testing
+test-results/
+reports/
