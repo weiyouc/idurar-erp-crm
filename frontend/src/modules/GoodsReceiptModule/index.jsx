@@ -34,7 +34,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { request } from '@/request';
-import DataTable from '@/components/DataTable/DataTable';
+import SimpleDataTable from '@/components/DataTable/SimpleDataTable';
 import GoodsReceiptForm from '@/forms/GoodsReceiptForm';
 
 const { Option } = Select;
@@ -403,7 +403,7 @@ const GoodsReceiptModule = () => {
 
           {searchFields}
 
-          <DataTable
+          <SimpleDataTable
             entity="goods-receipts"
             columns={columns}
             refreshKey={refreshKey}

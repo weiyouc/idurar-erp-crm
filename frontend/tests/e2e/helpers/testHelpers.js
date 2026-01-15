@@ -159,15 +159,23 @@ export async function login(page, email = 'admin@admin.com', password = 'admin12
     await page.waitForURL(/\/(dashboard|home|$)/, { timeout: 15000 });
   } catch (e) {
     // Check if we're still on login page (login failed)
+    await page.waitForTimeout(2000); // Give it more time
     const url = page.url();
-    if (url.includes('/login')) {
+    if (url.includes('/login') || url.includes('/forgetpassword')) {
       // Check for error message
       const errorVisible = await page.locator('.ant-message-error, .ant-form-item-explain-error').isVisible({ timeout: 2000 }).catch(() => false);
       if (errorVisible) {
         throw new Error('Login failed - check credentials');
       }
-      throw new Error('Login did not redirect - still on login page');
+      // Check one more time if we're still on login page
+      await page.waitForTimeout(2000);
+      const finalUrl = page.url();
+      if (finalUrl.includes('/login') || finalUrl.includes('/forgetpassword')) {
+        throw new Error('Login did not redirect - still on login page');
+      }
+      // If we're not on login page anymore, login succeeded
     }
+    // If we're not on login page, login likely succeeded
   }
   
   // Verify login success - wait for page to load

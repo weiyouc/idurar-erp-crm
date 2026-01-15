@@ -35,7 +35,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { request } from '@/request';
-import DataTable from '@/components/DataTable/DataTable';
+import SimpleDataTable from '@/components/DataTable/SimpleDataTable';
 import MaterialQuotationForm from '@/forms/MaterialQuotationForm';
 
 const { Option } = Select;
@@ -446,7 +446,7 @@ const MaterialQuotationModule = () => {
 
           {searchFields}
 
-          <DataTable
+          <SimpleDataTable
             entity="material-quotations"
             columns={columns}
             refreshKey={refreshKey}

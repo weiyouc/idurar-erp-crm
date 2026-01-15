@@ -392,7 +392,9 @@ async function seed() {
 
 // Allow running as standalone script
 if (require.main === module) {
-  const dbUrl = process.env.DATABASE || 'mongodb://127.0.0.1:27017/idurarapp';
+  // Load .env file if it exists
+  require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
+  const dbUrl = process.env.DATABASE || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/idurarapp';
   
   mongoose
     .connect(dbUrl, {

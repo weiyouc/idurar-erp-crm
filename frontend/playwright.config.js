@@ -39,8 +39,8 @@ export default defineConfig({
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
     
-    // Screenshot on failure
-    screenshot: 'only-on-failure',
+    // Screenshot on failure (can be overridden with SCREENSHOT_MODE env var)
+    screenshot: process.env.SCREENSHOT_MODE || 'only-on-failure',
     
     // Video on failure
     video: 'retain-on-failure',

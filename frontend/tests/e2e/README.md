@@ -158,6 +158,11 @@ tests/e2e/
 ├── helpers/
 │   ├── testHelpers.js          # Common test utilities
 │   └── auth.setup.js           # Authentication setup
+├── 00-acceptance-criteria/     # User Requirements Acceptance Tests
+│   ├── pre-procurement-management.spec.js    # 采购前：基础数据与价格管理
+│   ├── procurement-execution.spec.js          # 采购中：需求MRP与订单执行
+│   ├── post-procurement-management.spec.js  # 采购后管理：付款与闭环
+│   └── system-requirements.spec.js           # 系统需求总结 (6 requirements)
 ├── 01-system-foundation/
 │   ├── workflow-engine.spec.js # REQ-WF-001 to REQ-WF-006
 │   └── rbac.spec.js             # REQ-RBAC-001 to REQ-RBAC-006

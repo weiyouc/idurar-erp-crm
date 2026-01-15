@@ -31,7 +31,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { request } from '@/request';
-import DataTable from '@/components/DataTable/DataTable';
+import SimpleDataTable from '@/components/DataTable/SimpleDataTable';
 import PurchaseOrderForm from '@/forms/PurchaseOrderForm';
 
 const { Option } = Select;
@@ -419,7 +419,7 @@ const PurchaseOrderModule = () => {
       >
         {filterComponents}
         <div style={{ marginTop: 16 }}>
-          <DataTable
+          <SimpleDataTable
             entity="purchase-orders"
             columns={columns}
             refreshKey={refreshKey}
