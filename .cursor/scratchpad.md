@@ -36,6 +36,9 @@ The user wants to remove branding/marketing strings from the codebase, specifica
 **New Request (Jan 15, 2026 - Follow-up)**:
 Add branding: "Welcome to Silver Plan CRM System" to the project UI.
 
+**New Request (Jan 16, 2026)**:
+User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudflare as a remote MCP server.
+
 ## Key Challenges and Analysis
 
 1. **Role Clarification**: The document contains many uncertain roles (电脑部?, 待定?, etc.). We need to either:
@@ -229,6 +232,7 @@ Add branding: "Welcome to Silver Plan CRM System" to the project UI.
 - ✅ Added `frontend/tests/e2e/reports/results.json` to `frontend/.gitignore`
 - ✅ Removed marketing/branding strings from frontend UI/logs and README
 - ✅ Added Silver Plan branding to login side content
+- ✅ Provided Cloudflare deployment guidance for HTTP Node MCP server (remote MCP)
 
 **Total Documentation:** ~6,200 lines across 9 files
 
@@ -336,6 +340,10 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 - Removed welcome banner console logs and login side-content tagline
 - Please verify Task 9 changes; ready for Planner confirmation
 - Added "Welcome to Silver Plan CRM System" to login side content
+
+**Jan 16, 2026 Update:**
+- Provided next steps for deploying Node HTTP MCP on Cloudflare Workers (HTTP adapter, auth, wrangler deploy)
+- Waiting for any repo-specific implementation request or confirmation
 
 **Gap Analysis Completed (2025-01-27):**
 - Created comprehensive gap analysis report comparing current system capabilities against Silverplan requirements
