@@ -1,7 +1,6 @@
-import { Space, Layout, Divider, Typography } from 'antd';
+import { Layout, Typography } from 'antd';
 import logo from '@/style/images/sp.png';
 import useLanguage from '@/locale/useLanguage';
-import { useSelector } from 'react-redux';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -28,12 +27,9 @@ export default function SideContent() {
           width={220}
         />
 
-        <Title level={1} style={{ fontSize: 28 }}>
-          Free Open Source ERP / CRM
+        <Title level={2} style={{ fontSize: 26, marginBottom: 12 }}>
+          Welcome to Silver Plan CRM System
         </Title>
-        <Text>
-          Accounting / Invoicing / Quote App <b /> based on Node.js React.js Ant Design
-        </Text>
 
         <div className="space20"></div>
       </div>

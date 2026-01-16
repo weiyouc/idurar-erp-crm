@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense } from 'react';
 
 import { useSelector } from 'react-redux';
 import { selectAuth } from '@/redux/auth/selectors';
@@ -6,8 +6,6 @@ import { AppContextProvider } from '@/context/appContext';
 import PageLoader from '@/components/PageLoader';
 import AuthRouter from '@/router/AuthRouter';
 import Localization from '@/locale/Localization';
-import { notification } from 'antd';
-
 const ErpApp = lazy(() => import('./ErpApp'));
 
 const DefaultApp = () => (
@@ -22,10 +20,6 @@ const DefaultApp = () => (
 
 export default function IdurarOs() {
   const { isLoggedIn } = useSelector(selectAuth);
-
-  console.log(
-    '🚀 Welcome to IDURAR ERP CRM! Did you know that we also offer commercial customization services? Contact us at hello@idurarapp.com for more information.'
-  );
 
   // // Online state
   // const [isOnline, setIsOnline] = useState(navigator.onLine);
