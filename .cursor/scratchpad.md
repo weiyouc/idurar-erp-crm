@@ -28,6 +28,14 @@ The goal is to transform this into a formal, structured requirements document th
    - Be broken into a separate documentation file, OR
    - Have a corresponding web page and Excel file for download
 
+**New Request (Jan 15, 2026)**:
+The user wants to remove branding/marketing strings from the codebase, specifically:
+- "Free Open Source ERP / CRM Accounting / Invoicing / Quote App based on Node.js React.js Ant Design"
+- The console welcome banner referencing commercial customization services (e.g., "🚀 Welcome to IDURAR ERP CRM! ... hello@idurarapp.com ...")
+
+**New Request (Jan 15, 2026 - Follow-up)**:
+Add branding: "Welcome to Silver Plan CRM System" to the project UI.
+
 ## Key Challenges and Analysis
 
 1. **Role Clarification**: The document contains many uncertain roles (电脑部?, 待定?, etc.). We need to either:
@@ -149,6 +157,23 @@ The goal is to transform this into a formal, structured requirements document th
   - Add table of contents if document is long
 - **Success Criteria**: Document is internally consistent and complete
 
+### Task 9: Remove Branding/Marketing Strings from Codebase
+- **Objective**: Remove the specified marketing/branding strings from source code and runtime output
+- **Actions**:
+  - Search for the exact strings in frontend and backend code
+  - Remove or replace with neutral text where needed
+  - Ensure no console output logs the welcome banner
+  - Verify build artifacts are not tracked or are updated if necessary
+- **Success Criteria**: The specified strings no longer appear in the codebase or runtime logs
+
+### Task 10: Add Silver Plan Branding
+- **Objective**: Add the requested branding phrase to the project UI
+- **Actions**:
+  - Identify a primary UI surface for the branding text (login side content)
+  - Add the branding text with consistent typography styling
+  - Ensure no console logs are introduced
+- **Success Criteria**: "Welcome to Silver Plan CRM System" is visible in the UI
+
 ## Project Status Board
 
 - [x] Task 1: Document Structure Standardization (Completed via FRP & FIP)
@@ -159,6 +184,8 @@ The goal is to transform this into a formal, structured requirements document th
 - [x] Task 6: Terminology and Language Consistency (Completed)
 - [x] Task 7: Excel Format Documentation Extraction (Completed - 5 sheets documented)
 - [x] Task 8: Cross-Reference and Validation (Completed - 99/100 score)
+- [ ] Task 9: Remove Branding/Marketing Strings from Codebase (Ready for review)
+- [ ] Task 10: Add Silver Plan Branding
 
 ## Current Status / Progress Tracking
 
@@ -197,6 +224,11 @@ The goal is to transform this into a formal, structured requirements document th
   - Implementation timeline breakdown
   - Success criteria and risk assessment
   - Approval checklist and next steps
+
+**Recent Executor Updates:**
+- ✅ Added `frontend/tests/e2e/reports/results.json` to `frontend/.gitignore`
+- ✅ Removed marketing/branding strings from frontend UI/logs and README
+- ✅ Added Silver Plan branding to login side content
 
 **Total Documentation:** ~6,200 lines across 9 files
 
@@ -298,6 +330,12 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 ---
 
 ## Executor's Feedback or Assistance Requests
+
+**Jan 15, 2026 Update:**
+- Completed request to ignore `frontend/tests/e2e/reports/results.json` in `frontend/.gitignore`
+- Removed welcome banner console logs and login side-content tagline
+- Please verify Task 9 changes; ready for Planner confirmation
+- Added "Welcome to Silver Plan CRM System" to login side content
 
 **Gap Analysis Completed (2025-01-27):**
 - Created comprehensive gap analysis report comparing current system capabilities against Silverplan requirements
