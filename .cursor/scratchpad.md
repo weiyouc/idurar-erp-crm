@@ -36,6 +36,10 @@ The user wants to remove branding/marketing strings from the codebase, specifica
 **New Request (Jan 15, 2026 - Follow-up)**:
 Add branding: "Welcome to Silver Plan CRM System" to the project UI.
 
+**New Request (Jan 16, 2026 - Bug)**:
+User hit an error adding supplier in production: frontend throws "TypeError: A is not a function"
+and backend returns 404 for `.../api/suppliers/create`.
+
 **New Request (Jan 16, 2026)**:
 User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudflare as a remote MCP server.
 
@@ -177,6 +181,15 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
   - Ensure no console logs are introduced
 - **Success Criteria**: "Welcome to Silver Plan CRM System" is visible in the UI
 
+### Task 11: Fix Supplier Create 404 / Frontend Error
+- **Objective**: Fix supplier creation flow in production
+- **Actions**:
+  - Verify frontend endpoint for supplier create and backend route registration
+  - Align route path (e.g., `/api/supplier/create` vs `/api/suppliers/create`)
+  - Ensure frontend error handling doesn't call undefined functions
+  - Add tests or quick verification where possible
+- **Success Criteria**: Supplier create request returns 200/201; no JS error
+
 ## Project Status Board
 
 - [x] Task 1: Document Structure Standardization (Completed via FRP & FIP)
@@ -189,6 +202,7 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 - [x] Task 8: Cross-Reference and Validation (Completed - 99/100 score)
 - [ ] Task 9: Remove Branding/Marketing Strings from Codebase (Ready for review)
 - [ ] Task 10: Add Silver Plan Branding
+- [ ] Task 11: Fix Supplier Create 404 / Frontend Error
 
 ## Current Status / Progress Tracking
 
@@ -232,6 +246,7 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 - ✅ Added `frontend/tests/e2e/reports/results.json` to `frontend/.gitignore`
 - ✅ Removed marketing/branding strings from frontend UI/logs and README
 - ✅ Added Silver Plan branding to login side content
+- ✅ Added supplier CRUD alias routes and embedded supplier form fields
 - ✅ Provided Cloudflare deployment guidance for HTTP Node MCP server (remote MCP)
 
 **Total Documentation:** ~6,200 lines across 9 files
@@ -340,6 +355,7 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 - Removed welcome banner console logs and login side-content tagline
 - Please verify Task 9 changes; ready for Planner confirmation
 - Added "Welcome to Silver Plan CRM System" to login side content
+- Fixed supplier create flow: /create alias + embedded form fields
 
 **Jan 16, 2026 Update:**
 - Provided next steps for deploying Node HTTP MCP on Cloudflare Workers (HTTP adapter, auth, wrangler deploy)

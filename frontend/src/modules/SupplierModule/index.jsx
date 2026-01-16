@@ -336,8 +336,8 @@ const SupplierModule = () => {
   return (
     <CrudModule
       config={config}
-      createForm={<SupplierForm />}
-      updateForm={<SupplierForm isUpdateForm={true} />}
+      createForm={<SupplierForm embedded />}
+      updateForm={<SupplierForm embedded isUpdateForm={true} />}
     />
   );
 };

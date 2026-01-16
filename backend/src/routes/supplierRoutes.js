@@ -37,6 +37,30 @@ router.get(
 
 // CRUD routes
 router.post(
+  '/create',
+  checkPermission('supplier', 'create'),
+  catchErrors(supplierController.create)
+);
+
+router.get(
+  '/read/:id',
+  checkPermission('supplier', 'read'),
+  catchErrors(supplierController.read)
+);
+
+router.patch(
+  '/update/:id',
+  checkPermission('supplier', 'update'),
+  catchErrors(supplierController.update)
+);
+
+router.delete(
+  '/delete/:id',
+  checkPermission('supplier', 'delete'),
+  catchErrors(supplierController.remove)
+);
+
+router.post(
   '/',
   checkPermission('supplier', 'create'),
   catchErrors(supplierController.create)
