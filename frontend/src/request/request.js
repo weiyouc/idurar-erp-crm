@@ -35,6 +35,18 @@ const request = {
       });
       return response.data;
     } catch (error) {
+      if (error?.response?.status === 404) {
+        try {
+          const response = await axios.post(entity, jsonData);
+          successHandler(response, {
+            notifyOnSuccess: true,
+            notifyOnFailed: true,
+          });
+          return response.data;
+        } catch (fallbackError) {
+          return errorHandler(fallbackError);
+        }
+      }
       return errorHandler(error);
     }
   },
@@ -52,6 +64,22 @@ const request = {
       });
       return response.data;
     } catch (error) {
+      if (error?.response?.status === 404) {
+        try {
+          const response = await axios.post(entity, jsonData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          successHandler(response, {
+            notifyOnSuccess: true,
+            notifyOnFailed: true,
+          });
+          return response.data;
+        } catch (fallbackError) {
+          return errorHandler(fallbackError);
+        }
+      }
       return errorHandler(error);
     }
   },
@@ -65,6 +93,18 @@ const request = {
       });
       return response.data;
     } catch (error) {
+      if (error?.response?.status === 404) {
+        try {
+          const response = await axios.get(entity + '/' + id);
+          successHandler(response, {
+            notifyOnSuccess: false,
+            notifyOnFailed: true,
+          });
+          return response.data;
+        } catch (fallbackError) {
+          return errorHandler(fallbackError);
+        }
+      }
       return errorHandler(error);
     }
   },
@@ -78,6 +118,18 @@ const request = {
       });
       return response.data;
     } catch (error) {
+      if (error?.response?.status === 404) {
+        try {
+          const response = await axios.patch(entity + '/' + id, jsonData);
+          successHandler(response, {
+            notifyOnSuccess: true,
+            notifyOnFailed: true,
+          });
+          return response.data;
+        } catch (fallbackError) {
+          return errorHandler(fallbackError);
+        }
+      }
       return errorHandler(error);
     }
   },
@@ -95,6 +147,22 @@ const request = {
       });
       return response.data;
     } catch (error) {
+      if (error?.response?.status === 404) {
+        try {
+          const response = await axios.patch(entity + '/' + id, jsonData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          successHandler(response, {
+            notifyOnSuccess: true,
+            notifyOnFailed: true,
+          });
+          return response.data;
+        } catch (fallbackError) {
+          return errorHandler(fallbackError);
+        }
+      }
       return errorHandler(error);
     }
   },
@@ -109,6 +177,18 @@ const request = {
       });
       return response.data;
     } catch (error) {
+      if (error?.response?.status === 404) {
+        try {
+          const response = await axios.delete(entity + '/' + id);
+          successHandler(response, {
+            notifyOnSuccess: true,
+            notifyOnFailed: true,
+          });
+          return response.data;
+        } catch (fallbackError) {
+          return errorHandler(fallbackError);
+        }
+      }
       return errorHandler(error);
     }
   },

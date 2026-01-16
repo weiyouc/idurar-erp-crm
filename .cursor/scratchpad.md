@@ -40,6 +40,9 @@ Add branding: "Welcome to Silver Plan CRM System" to the project UI.
 User hit an error adding supplier in production: frontend throws "TypeError: A is not a function"
 and backend returns 404 for `.../api/suppliers/create`.
 
+**New Request (Jan 16, 2026 - Bug Follow-up)**:
+Supplier create still 404 in production. Need a frontend fallback for RESTful routes.
+
 **New Request (Jan 16, 2026)**:
 User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudflare as a remote MCP server.
 
@@ -190,6 +193,13 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
   - Add tests or quick verification where possible
 - **Success Criteria**: Supplier create request returns 200/201; no JS error
 
+### Task 12: Add CRUD RESTful Fallback in Request Client
+- **Objective**: Avoid 404 when backend only supports RESTful routes
+- **Actions**:
+  - Add 404 fallback for create/read/update/delete to use RESTful endpoints
+  - Keep existing /create,/read,/update,/delete as primary for legacy routes
+- **Success Criteria**: Supplier create works against RESTful-only backend
+
 ## Project Status Board
 
 - [x] Task 1: Document Structure Standardization (Completed via FRP & FIP)
@@ -203,6 +213,7 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 - [ ] Task 9: Remove Branding/Marketing Strings from Codebase (Ready for review)
 - [ ] Task 10: Add Silver Plan Branding
 - [ ] Task 11: Fix Supplier Create 404 / Frontend Error
+- [ ] Task 12: Add CRUD RESTful Fallback in Request Client
 
 ## Current Status / Progress Tracking
 
@@ -247,6 +258,7 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 - ✅ Removed marketing/branding strings from frontend UI/logs and README
 - ✅ Added Silver Plan branding to login side content
 - ✅ Added supplier CRUD alias routes and embedded supplier form fields
+- ✅ Added RESTful fallback for CRUD requests in frontend client
 - ✅ Provided Cloudflare deployment guidance for HTTP Node MCP server (remote MCP)
 
 **Total Documentation:** ~6,200 lines across 9 files
@@ -356,6 +368,7 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 - Please verify Task 9 changes; ready for Planner confirmation
 - Added "Welcome to Silver Plan CRM System" to login side content
 - Fixed supplier create flow: /create alias + embedded form fields
+- Added RESTful fallback to CRUD request methods for 404s
 
 **Jan 16, 2026 Update:**
 - Provided next steps for deploying Node HTTP MCP on Cloudflare Workers (HTTP adapter, auth, wrangler deploy)
