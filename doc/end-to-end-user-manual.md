@@ -91,7 +91,7 @@ This manual serves as:
    - **Phone**: Enter contact phone number
    - ![Supplier Form](screenshots/03-supplier-form.png)
 
-4. Click **"Save"** button
+4. Click **"Submit"** button
    - ![Save Supplier](screenshots/04-save-supplier.png)
 
 5. Verify success message appears

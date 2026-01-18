@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import { request } from '@/request';
 import dayjs from 'dayjs';
+import ExportButton from '@/components/ExportButton';
 
 const SupplierModule = () => {
   const entity = 'suppliers';
@@ -330,7 +331,45 @@ const SupplierModule = () => {
     CREATE_ENTITY: 'Save supplier',
     UPDATE_ENTITY: 'Update supplier',
     readColumns: dataTableColumns,
-    dataTableAdditionalActions: additionalActions
+    dataTableAdditionalActions: additionalActions,
+    headerActions: [
+      <ExportButton
+        key="export-suppliers"
+        entity="suppliers"
+        exportType="supplier"
+        buttonText="Export"
+        buttonType="default"
+      />
+    ],
+    updateFooterActions: (current) => {
+      const supplierId = current?._id || current?.id;
+      if (!supplierId || current?.status !== 'draft') {
+        return null;
+      }
+
+      return (
+        <Button
+          type="primary"
+          icon={<SendOutlined />}
+          style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+          onClick={async () => {
+            try {
+              const response = await request.post({
+                entity: `${entity}/${supplierId}/submit`
+              });
+              if (response.success) {
+                message.success('Supplier submitted for approval');
+                window.location.reload();
+              }
+            } catch (error) {
+              message.error(`Failed to submit: ${error.message}`);
+            }
+          }}
+        >
+          Submit for Approval
+        </Button>
+      );
+    }
   };
 
   return (

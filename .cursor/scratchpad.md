@@ -46,6 +46,9 @@ Supplier create still 404 in production. Need a frontend fallback for RESTful ro
 **New Request (Jan 16, 2026)**:
 User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudflare as a remote MCP server.
 
+**New Request (Jan 18, 2026)**:
+Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1.4 vs. current UI. Need to identify missing UI coverage or documentation mismatch before changes.
+
 ## Key Challenges and Analysis
 
 1. **Role Clarification**: The document contains many uncertain roles (电脑部?, 待定?, etc.). We need to either:
@@ -72,6 +75,8 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
    - Create separate documentation files or web pages for each format
    - Ensure the format specifications are clear and complete
    - Link these formats to the corresponding requirements sections
+
+7. **Manual vs UI Alignment**: Use cases 1.2 (attachments), 1.3 (export), 1.4 (workflow submit) are documented but may not exist in UI; need evidence-based gaps tied to specific screens/routes/components.
 
 ## High-level Task Breakdown
 
@@ -200,6 +205,15 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
   - Keep existing /create,/read,/update,/delete as primary for legacy routes
 - **Success Criteria**: Supplier create works against RESTful-only backend
 
+### Task 13: Gap Analysis - Manual vs UI for Use Cases 1.2/1.3/1.4
+- **Objective**: Identify where UI does not match documented use cases in `doc/end-to-end-user-manual.md`
+- **Actions**:
+  - Locate current Supplier UI screens/routes/components
+  - Verify presence/absence of: attachments UI, export UI, submit-for-approval UI
+  - Cross-reference backend routes/capabilities (if any) supporting these actions
+  - Summarize gaps with evidence (file paths, screen names)
+- **Success Criteria**: Clear gap list for each use case with UI evidence or missing components noted
+
 ## Project Status Board
 
 - [x] Task 1: Document Structure Standardization (Completed via FRP & FIP)
@@ -214,6 +228,7 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 - [ ] Task 10: Add Silver Plan Branding
 - [ ] Task 11: Fix Supplier Create 404 / Frontend Error
 - [ ] Task 12: Add CRUD RESTful Fallback in Request Client
+- [ ] Task 13: Gap Analysis - Manual vs UI for Use Cases 1.2/1.3/1.4
 
 ## Current Status / Progress Tracking
 
@@ -260,6 +275,8 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 - ✅ Added supplier CRUD alias routes and embedded supplier form fields
 - ✅ Added RESTful fallback for CRUD requests in frontend client
 - ✅ Provided Cloudflare deployment guidance for HTTP Node MCP server (remote MCP)
+- ✅ Gap analysis draft: Use cases 1.2/1.3/1.4 vs Supplier UI (manual vs UI mismatch)
+- ✅ Option A changes: Supplier export button, submit in update panel, attachments tab visible on update
 
 **Total Documentation:** ~6,200 lines across 9 files
 
@@ -373,6 +390,20 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 **Jan 16, 2026 Update:**
 - Provided next steps for deploying Node HTTP MCP on Cloudflare Workers (HTTP adapter, auth, wrangler deploy)
 - Waiting for any repo-specific implementation request or confirmation
+
+**Jan 18, 2026 Update:**
+- Gap analysis findings ready for review:
+  - Use Case 1.2 (Supplier attachments): UI component exists (`SupplierForm` Documents tab + `FileUpload`), but not reachable in current embedded create/update panel because `current` is not passed, so Documents tab never renders.
+  - Use Case 1.3 (Export supplier list): Backend route exists (`/api/suppliers/export`), but Supplier UI has no export button (no `ExportButton` usage in `SupplierModule` and `DataTable` has no export action).
+  - Use Case 1.4 (Submit for approval): Submit is available as a list-row action in `SupplierModule` for draft records, but the form view lacks a visible submit button because the non-embedded `SupplierForm` (with Submit) is not used in current UI.
+- Please confirm these gaps before I proceed to any fixes.
+
+**Jan 18, 2026 Follow-up:**
+- Implemented UI fixes for Option A:
+  - Added `headerActions` support in `DataTable` and wired Supplier export button.
+  - Passed `current` into embedded update form to render Documents tab.
+  - Added update-panel "Submit for Approval" button for draft suppliers.
+- Please test Supplier list export, open a supplier to confirm Documents tab shows, and verify Submit button in update panel.
 
 **Gap Analysis Completed (2025-01-27):**
 - Created comprehensive gap analysis report comparing current system capabilities against Silverplan requirements

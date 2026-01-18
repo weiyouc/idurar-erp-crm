@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, isValidElement, cloneElement } from 'react';
 import dayjs from 'dayjs';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -94,11 +94,17 @@ export default function UpdateForm({ config, formElements, withUpload = false })
   const { isEditBoxOpen } = state;
 
   const show = isEditBoxOpen ? { display: 'block', opacity: 1 } : { display: 'none', opacity: 0 };
+  const resolvedFormElements = isValidElement(formElements)
+    ? cloneElement(formElements, { current })
+    : formElements;
+  const updateFooterActions = config?.updateFooterActions;
+  const footerActions =
+    typeof updateFooterActions === 'function' ? updateFooterActions(current) : updateFooterActions;
   return (
     <div style={show}>
       <Loading isLoading={isLoading}>
         <Form form={form} layout="vertical" onFinish={onSubmit}>
-          {formElements}
+          {resolvedFormElements}
           <Form.Item
             style={{
               display: 'inline-block',
@@ -117,6 +123,16 @@ export default function UpdateForm({ config, formElements, withUpload = false })
           >
             <Button onClick={showCurrentRecord}>{translate('Cancel')}</Button>
           </Form.Item>
+          {footerActions && (
+            <Form.Item
+              style={{
+                display: 'inline-block',
+                paddingLeft: '5px',
+              }}
+            >
+              {footerActions}
+            </Form.Item>
+          )}
         </Form>
       </Loading>
     </div>

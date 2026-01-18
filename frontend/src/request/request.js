@@ -167,9 +167,18 @@ const request = {
     }
   },
 
-  delete: async ({ entity, id }) => {
+  delete: async (entityOrOptions, maybeId) => {
     try {
       includeToken();
+      if (typeof entityOrOptions === 'string') {
+        const response = await axios.delete(entityOrOptions, maybeId);
+        successHandler(response, {
+          notifyOnSuccess: true,
+          notifyOnFailed: true,
+        });
+        return response.data;
+      }
+      const { entity, id } = entityOrOptions || {};
       const response = await axios.delete(entity + '/delete/' + id);
       successHandler(response, {
         notifyOnSuccess: true,
@@ -177,8 +186,9 @@ const request = {
       });
       return response.data;
     } catch (error) {
-      if (error?.response?.status === 404) {
+      if (typeof entityOrOptions !== 'string' && error?.response?.status === 404) {
         try {
+          const { entity, id } = entityOrOptions || {};
           const response = await axios.delete(entity + '/' + id);
           successHandler(response, {
             notifyOnSuccess: true,
@@ -232,9 +242,25 @@ const request = {
     }
   },
 
-  list: async ({ entity, options = {} }) => {
+  list: async (entityOrOptions, maybeOptions = {}) => {
     try {
       includeToken();
+      if (typeof entityOrOptions === 'string') {
+        let query = '?';
+        for (var key in maybeOptions) {
+          query += key + '=' + maybeOptions[key] + '&';
+        }
+        query = query.slice(0, -1);
+
+        const response = await axios.get(entityOrOptions + '/list' + query);
+
+        successHandler(response, {
+          notifyOnSuccess: false,
+          notifyOnFailed: false,
+        });
+        return response.data;
+      }
+      const { entity, options = {} } = entityOrOptions || {};
       let query = '?';
       for (var key in options) {
         query += key + '=' + options[key] + '&';
@@ -273,28 +299,46 @@ const request = {
     }
   },
 
-  post: async ({ entity, jsonData }) => {
+  post: async (entityOrOptions, maybeData) => {
     try {
       includeToken();
+      if (typeof entityOrOptions === 'string') {
+        const response = await axios.post(entityOrOptions, maybeData);
+        return response.data;
+      }
+      const { entity, jsonData } = entityOrOptions || {};
       const response = await axios.post(entity, jsonData);
-
       return response.data;
     } catch (error) {
       return errorHandler(error);
     }
   },
-  get: async ({ entity }) => {
+  get: async (entityOrOptions, maybeConfig) => {
     try {
       includeToken();
-      const response = await axios.get(entity);
+      if (typeof entityOrOptions === 'string') {
+        const response = await axios.get(entityOrOptions, maybeConfig);
+        return response.data;
+      }
+      const { entity, options } = entityOrOptions || {};
+      const response = await axios.get(entity, options);
       return response.data;
     } catch (error) {
       return errorHandler(error);
     }
   },
-  patch: async ({ entity, jsonData }) => {
+  patch: async (entityOrOptions, maybeData) => {
     try {
       includeToken();
+      if (typeof entityOrOptions === 'string') {
+        const response = await axios.patch(entityOrOptions, maybeData);
+        successHandler(response, {
+          notifyOnSuccess: true,
+          notifyOnFailed: true,
+        });
+        return response.data;
+      }
+      const { entity, jsonData } = entityOrOptions || {};
       const response = await axios.patch(entity, jsonData);
       successHandler(response, {
         notifyOnSuccess: true,

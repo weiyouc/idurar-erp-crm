@@ -43,7 +43,7 @@ const MaterialModule = () => {
   const [searchForm] = Form.useForm();
   const [categories, setCategories] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
-  const money = useMoney();
+  const { moneyFormatter } = useMoney();
 
   const entity = 'material';
 
@@ -67,11 +67,12 @@ const MaterialModule = () => {
       
       if (response.success) {
         setData(response.result);
+        const nextPagination = response.pagination || {};
         setPagination({
           ...pagination,
-          current: response.pagination.page,
-          pageSize: response.pagination.items || 10,
-          total: response.pagination.count,
+          current: nextPagination.page || pagination.current || 1,
+          pageSize: nextPagination.items || pagination.pageSize || 10,
+          total: nextPagination.count || pagination.total || 0,
         });
       }
     } catch (error) {
@@ -162,7 +163,7 @@ const MaterialModule = () => {
           {record.brand && <p><strong>品牌:</strong> {record.brand}</p>}
           {record.model && <p><strong>型号:</strong> {record.model}</p>}
           {record.manufacturer && <p><strong>制造商:</strong> {record.manufacturer}</p>}
-          <p><strong>标准成本:</strong> {money.format(record.standardCost)} {record.currency}</p>
+          <p><strong>标准成本:</strong> {moneyFormatter({ amount: record.standardCost, currency_code: record.currency })} {record.currency}</p>
           <p><strong>安全库存:</strong> {record.safetyStock}</p>
           <p><strong>再订购点:</strong> {record.reorderPoint}</p>
           {record.preferredSuppliers && record.preferredSuppliers.length > 0 && (
@@ -172,7 +173,7 @@ const MaterialModule = () => {
                 {record.preferredSuppliers.map((ps, idx) => (
                   <li key={idx}>
                     {ps.supplier?.companyName?.zh || ps.supplier?.companyName?.en} - 
-                    交期: {ps.leadTime}天, 价格: {money.format(ps.price)} {ps.currency}
+                    交期: {ps.leadTime}天, 价格: {moneyFormatter({ amount: ps.price, currency_code: ps.currency })} {ps.currency}
                   </li>
                 ))}
               </ul>
@@ -337,7 +338,8 @@ const MaterialModule = () => {
       dataIndex: 'standardCost',
       key: 'standardCost',
       width: 120,
-      render: (cost, record) => `${money.format(cost)} ${record.currency}`,
+      render: (cost, record) =>
+        `${moneyFormatter({ amount: cost, currency_code: record.currency })} ${record.currency}`,
       sorter: true,
     },
     {

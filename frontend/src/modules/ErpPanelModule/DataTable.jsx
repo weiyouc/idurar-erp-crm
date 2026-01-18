@@ -42,6 +42,7 @@ function AddNewItem({ config }) {
 export default function DataTable({ config, extra = [] }) {
   const translate = useLanguage();
   let { entity, dataTableColumns, disableAdd = false, searchConfig } = config;
+  const headerActions = config?.headerActions || [];
 
   const { DATATABLE_TITLE } = config;
 
@@ -194,6 +195,7 @@ export default function DataTable({ config, extra = [] }) {
           <Button onClick={handelDataTableLoad} key={`${uniqueId()}`} icon={<RedoOutlined />}>
             {translate('Refresh')}
           </Button>,
+          ...headerActions,
 
           !disableAdd && <AddNewItem config={config} key={`${uniqueId()}`} />,
         ]}
