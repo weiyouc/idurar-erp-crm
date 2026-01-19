@@ -16,6 +16,12 @@ router.get('/',
   roleController.list
 );
 
+// List all roles (compatibility)
+router.get('/list',
+  checkPermission('role', 'read', 'all'),
+  roleController.list
+);
+
 // Get role by ID
 router.get('/:id',
   checkPermission('role', 'read'),

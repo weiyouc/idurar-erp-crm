@@ -18,7 +18,7 @@ export default function WorkflowForm({ isUpdateForm = false }) {
     const fetchRoles = async () => {
       setLoading(true);
       try {
-        const response = await request.list({ entity: 'roles' });
+        const response = await request.get({ entity: 'roles' });
         if (response.success) {
           setRoles(response.result || []);
         }

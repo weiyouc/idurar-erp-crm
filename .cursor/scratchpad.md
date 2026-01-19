@@ -301,6 +301,7 @@ Implement full workflow configuration UI, role assignments, and amount-based rou
 - ✅ Fixed ApprovalRouter to support workflow level schema (approverRoles/levelNumber)
 - ✅ Added routing rule builder UI to workflow form (amount tiers + target levels)
 - ✅ Added Admin user list/update APIs and UI for role assignment
+- ✅ Fixed roles fetch in workflow form and added /roles/list compatibility route
 
 **Total Documentation:** ~6,200 lines across 9 files
 
