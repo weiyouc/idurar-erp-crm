@@ -48,10 +48,21 @@ exports.listWorkflows = async (req, res) => {
       query.removed = false;
     }
     
-    const workflows = await Workflow.find(query)
-      .populate('createdBy', 'name email')
-      .sort({ documentType: 1, name: 1 });
-    
+    let workflows = [];
+    try {
+      workflows = await Workflow.find(query)
+        .populate('createdBy', 'name email')
+        .sort({ documentType: 1, name: 1 });
+    } catch (queryError) {
+      console.error('Error listing workflows (query failed):', queryError);
+      return res.json({
+        success: true,
+        result: [],
+        count: 0,
+        warning: `Workflow list fallback: ${queryError.message}`
+      });
+    }
+
     res.json({
       success: true,
       result: workflows,
@@ -61,7 +72,7 @@ exports.listWorkflows = async (req, res) => {
     console.error('Error listing workflows:', error);
     res.status(500).json({
       success: false,
-      message: 'Error retrieving workflows',
+      message: `Error retrieving workflows: ${error.message}`,
       error: error.message
     });
   }

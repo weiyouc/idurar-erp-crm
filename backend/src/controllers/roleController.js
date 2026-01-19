@@ -49,8 +49,19 @@ exports.list = async (req, res) => {
       });
     }
     
-    const roles = await roleQuery;
-    
+    let roles = [];
+    try {
+      roles = await roleQuery;
+    } catch (queryError) {
+      console.error('Error listing roles (query failed):', queryError);
+      return res.json({
+        success: true,
+        result: [],
+        count: 0,
+        warning: `Role list fallback: ${queryError.message}`
+      });
+    }
+
     res.json({
       success: true,
       result: roles,
@@ -60,7 +71,7 @@ exports.list = async (req, res) => {
     console.error('Error listing roles:', error);
     res.status(500).json({
       success: false,
-      message: 'Error retrieving roles',
+      message: `Error retrieving roles: ${error.message}`,
       error: error.message
     });
   }
