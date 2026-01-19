@@ -252,8 +252,16 @@ const request = {
         }
         query = query.slice(0, -1);
 
+        const preferBaseList = ['roles', 'workflows'].includes(entityOrOptions);
+        const primaryUrl = preferBaseList
+          ? entityOrOptions + query
+          : entityOrOptions + '/list' + query;
+        const fallbackUrl = preferBaseList
+          ? entityOrOptions + '/list' + query
+          : entityOrOptions + query;
+
         try {
-          const response = await axios.get(entityOrOptions + '/list' + query);
+          const response = await axios.get(primaryUrl);
           successHandler(response, {
             notifyOnSuccess: false,
             notifyOnFailed: false,
@@ -264,8 +272,8 @@ const request = {
             const fallbackEntity =
               entityOrOptions === 'workflow-instances'
                 ? 'workflows/instances'
-                : entityOrOptions;
-            const response = await axios.get(fallbackEntity + query);
+                : null;
+            const response = await axios.get(fallbackEntity ? fallbackEntity + query : fallbackUrl);
             successHandler(response, {
               notifyOnSuccess: false,
               notifyOnFailed: false,
@@ -283,8 +291,16 @@ const request = {
       }
       query = query.slice(0, -1);
 
+      const preferBaseList = ['roles', 'workflows'].includes(entity);
+      const primaryUrl = preferBaseList
+        ? entity + query
+        : entity + '/list' + query;
+      const fallbackUrl = preferBaseList
+        ? entity + '/list' + query
+        : entity + query;
+
       try {
-        const response = await axios.get(entity + '/list' + query);
+        const response = await axios.get(primaryUrl);
         successHandler(response, {
           notifyOnSuccess: false,
           notifyOnFailed: false,
@@ -294,7 +310,9 @@ const request = {
         if (error?.response?.status === 404) {
           const fallbackEntity =
             entity === 'workflow-instances' ? 'workflows/instances' : entity;
-          const response = await axios.get(fallbackEntity + query);
+          const response = await axios.get(
+            fallbackEntity ? fallbackEntity + query : fallbackUrl
+          );
           successHandler(response, {
             notifyOnSuccess: false,
             notifyOnFailed: false,
