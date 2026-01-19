@@ -31,12 +31,6 @@ for (const filePath of modelsFiles) {
   require(path.resolve(filePath));
 }
 
-const { ensureDefaultWorkflows } = require('./setup/ensureDefaultWorkflows');
-
-mongoose.connection.once('open', async () => {
-  await ensureDefaultWorkflows();
-});
-
 // Start our app!
 const app = require('./app');
 app.set('port', process.env.PORT || 8888);

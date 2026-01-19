@@ -13,6 +13,7 @@
     "upgrade": "node src/setup/upgrade.js",
     "reset": "node src/setup/reset.js",
     "update-admin-name": "node src/setup/updateAdminName.js",
+    "seed:workflows": "node src/setup/seedWorkflowsSilverplan.js",
     "test": "jest --runInBand --detectOpenHandles --forceExit",
     "test:watch": "jest --watch --runInBand",
     "test:coverage": "jest --coverage --runInBand --detectOpenHandles --forceExit",

@@ -6,7 +6,6 @@
  */
 
 const Supplier = require('../models/appModels/Supplier');
-const { ensureDefaultWorkflows } = require('../setup/ensureDefaultWorkflows');
 const WorkflowEngine = require('./workflow/WorkflowEngine');
 const AuditLogService = require('./AuditLogService');
 
@@ -291,39 +290,16 @@ class SupplierService {
         throw new Error('Supplier is already approved and active');
       }
       
-      // Initiate workflow (retry once after seeding default workflow if missing)
-      let workflowInstance;
-      try {
-        workflowInstance = await WorkflowEngine.initiateWorkflow({
-          documentType: 'supplier',
-          documentId: supplier._id,
-          initiatedBy: userId,
-          metadata: {
-            supplierNumber: supplier.supplierNumber,
-            companyName: supplier.companyName,
-            type: supplier.type
-          }
-        });
-      } catch (workflowError) {
-        if (
-          workflowError?.message &&
-          workflowError.message.includes('No active workflow found for document type: supplier')
-        ) {
-          await ensureDefaultWorkflows();
-          workflowInstance = await WorkflowEngine.initiateWorkflow({
-            documentType: 'supplier',
-            documentId: supplier._id,
-            initiatedBy: userId,
-            metadata: {
-              supplierNumber: supplier.supplierNumber,
-              companyName: supplier.companyName,
-              type: supplier.type
-            }
-          });
-        } else {
-          throw workflowError;
-        }
-      }
+      const workflowInstance = await WorkflowEngine.initiateWorkflow({
+        documentType: 'supplier',
+        documentId: supplier._id,
+        initiatedBy: userId,
+        metadata: {
+          supplierNumber: supplier.supplierNumber,
+          companyName: supplier.companyName,
+          type: supplier.type,
+        },
+      });
       
       // Update supplier status
       supplier.status = 'pending_approval';
