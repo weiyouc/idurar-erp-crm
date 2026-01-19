@@ -47,12 +47,13 @@ export const crud = {
       let data = await request.list({ entity, options });
 
       if (data.success === true) {
+        const pagination = data.pagination || {};
         const result = {
           items: data.result,
           pagination: {
-            current: parseInt(data.pagination.page, 10),
+            current: parseInt(pagination.page || options?.page || 1, 10),
             pageSize: options?.items,
-            total: parseInt(data.pagination.count, 10),
+            total: parseInt(pagination.count || data.count || data.result?.length || 0, 10),
           },
         };
         dispatch({
