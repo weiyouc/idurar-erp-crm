@@ -277,6 +277,7 @@ Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1
 - ✅ Provided Cloudflare deployment guidance for HTTP Node MCP server (remote MCP)
 - ✅ Gap analysis draft: Use cases 1.2/1.3/1.4 vs Supplier UI (manual vs UI mismatch)
 - ✅ Option A changes: Supplier export button, submit in update panel, attachments tab visible on update
+- ✅ Added default supplier workflow seeding on server startup to prevent submit errors
 
 **Total Documentation:** ~6,200 lines across 9 files
 
@@ -404,6 +405,10 @@ Test Suites: 10 passed, 4 with minor adjustments needed
   - Passed `current` into embedded update form to render Documents tab.
   - Added update-panel "Submit for Approval" button for draft suppliers.
 - Please test Supplier list export, open a supplier to confirm Documents tab shows, and verify Submit button in update panel.
+
+**Jan 19, 2026 Update:**
+- Fixed submit error by seeding a default supplier workflow on server startup.
+- If no active supplier workflow exists, it creates one using `procurement_manager` role.
 
 **Gap Analysis Completed (2025-01-27):**
 - Created comprehensive gap analysis report comparing current system capabilities against Silverplan requirements
