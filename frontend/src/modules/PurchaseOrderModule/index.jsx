@@ -26,13 +26,13 @@ import {
   CloseOutlined,
   MoreOutlined,
   SearchOutlined,
-  FileExcelOutlined,
   FilePdfOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { request } from '@/request';
 import SimpleDataTable from '@/components/DataTable/SimpleDataTable';
 import PurchaseOrderForm from '@/forms/PurchaseOrderForm';
+import ExportButton from '@/components/ExportButton';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -392,12 +392,13 @@ const PurchaseOrderModule = () => {
       </Col>
       <Col span={4}>
         <Space>
-          <Button
-            icon={<FileExcelOutlined />}
-            onClick={() => handleExport('excel')}
-          >
-            Export
-          </Button>
+          <ExportButton
+            entity="purchase-orders"
+            exportType="purchase_order"
+            buttonText="Export"
+            buttonType="default"
+            filters={filters}
+          />
         </Space>
       </Col>
     </Row>

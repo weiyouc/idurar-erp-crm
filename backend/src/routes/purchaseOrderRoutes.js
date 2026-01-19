@@ -34,6 +34,12 @@ router.route('/material/:materialId')
     purchaseOrderController.getByMaterial
   );
 
+router.route('/export')
+  .get(
+    checkPermission('purchase_order', 'export'),
+    purchaseOrderController.export
+  );
+
 // CRUD operations
 router.route('/')
   .post(

@@ -1,4 +1,5 @@
 const PurchaseOrderService = require('../services/PurchaseOrderService');
+const ExcelExportService = require('../services/ExcelExportService');
 
 const purchaseOrderController = {
   /**
@@ -357,6 +358,37 @@ const purchaseOrderController = {
         success: true,
         result: stats
       });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
+   * Export purchase orders to Excel
+   */
+  export: async (req, res, next) => {
+    try {
+      const { page, items, sortBy, sortOrder, ...filters } = req.query;
+
+      const result = await PurchaseOrderService.listPurchaseOrders(filters, {
+        page: parseInt(page) || 1,
+        items: parseInt(items) || 1000,
+        sortBy: sortBy || 'createdAt',
+        sortOrder: sortOrder || 'desc'
+      });
+
+      const buffer = await ExcelExportService.exportPurchaseOrders(result.result || []);
+
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=purchase-orders-${Date.now()}.xlsx`
+      );
+
+      return res.status(200).send(buffer);
     } catch (error) {
       next(error);
     }
