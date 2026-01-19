@@ -30,15 +30,18 @@ export default function AdminModule({ config }) {
       dataIndex: 'roles',
       key: 'roles',
       width: 220,
-      render: (roles) => (
-        <Space wrap>
-          {(roles || []).map(role => (
-            <Tag key={role._id} color="blue">
-              {role.displayName?.en || role.name}
-            </Tag>
-          ))}
-        </Space>
-      ),
+      render: (roles) => {
+        const roleList = Array.isArray(roles) ? roles : roles ? [roles] : [];
+        return (
+          <Space wrap>
+            {roleList.map(role => (
+              <Tag key={role._id || role} color="blue">
+                {role.displayName?.en || role.name || String(role)}
+              </Tag>
+            ))}
+          </Space>
+        );
+      },
     },
     {
       title: 'Status',
@@ -60,8 +63,10 @@ export default function AdminModule({ config }) {
     {
       title: 'Roles',
       dataIndex: 'roles',
-      render: (roles) =>
-        (roles || []).map(role => role.displayName?.en || role.name).join(', '),
+      render: (roles) => {
+        const roleList = Array.isArray(roles) ? roles : roles ? [roles] : [];
+        return roleList.map(role => role.displayName?.en || role.name || String(role)).join(', ');
+      },
     },
     { title: 'Enabled', dataIndex: 'enabled', render: (value) => (value ? 'Yes' : 'No') },
   ];
