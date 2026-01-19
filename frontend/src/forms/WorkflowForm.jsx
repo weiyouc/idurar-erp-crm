@@ -1,4 +1,4 @@
-import { Form, Input, Select, InputNumber, Switch, Button, Space, Card } from 'antd';
+import { Form, Input, Select, InputNumber, Switch, Button, Space, Card, Divider } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import useLanguage from '@/locale/useLanguage';
@@ -10,6 +10,8 @@ export default function WorkflowForm({ isUpdateForm = false }) {
   const translate = useLanguage();
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const form = Form.useFormInstance();
+  const levels = Form.useWatch('levels', form) || [];
 
   useEffect(() => {
     // Fetch available roles
@@ -35,6 +37,24 @@ export default function WorkflowForm({ isUpdateForm = false }) {
     { value: 'material_quotation', label: 'Material Quotation' },
     { value: 'purchase_order', label: 'Purchase Order' },
     { value: 'pre_payment', label: 'Pre-payment Application' },
+  ];
+
+  const conditionTypeOptions = [
+    { value: 'amount', label: 'Amount' },
+    { value: 'supplier_level', label: 'Supplier Level' },
+    { value: 'material_category', label: 'Material Category' },
+    { value: 'custom', label: 'Custom' },
+  ];
+
+  const operatorOptions = [
+    { value: 'gt', label: '>' },
+    { value: 'gte', label: '>=' },
+    { value: 'lt', label: '<' },
+    { value: 'lte', label: '<=' },
+    { value: 'eq', label: '=' },
+    { value: 'ne', label: '≠' },
+    { value: 'in', label: 'in' },
+    { value: 'not_in', label: 'not in' },
   ];
 
   return (
@@ -229,6 +249,101 @@ export default function WorkflowForm({ isUpdateForm = false }) {
             </>
           )}
         </Form.List>
+      </Card>
+
+      <Card
+        title={translate('routing_rules')}
+        size="small"
+        style={{ marginBottom: 16 }}
+      >
+        <Form.List name="routingRules">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Card
+                  key={key}
+                  type="inner"
+                  size="small"
+                  style={{ marginBottom: 16 }}
+                  title={`${translate('rule')} ${name + 1}`}
+                  extra={
+                    <MinusCircleOutlined
+                      onClick={() => remove(name)}
+                      style={{ color: 'red' }}
+                    />
+                  }
+                >
+                  <Form.Item
+                    {...restField}
+                    label={translate('condition_type')}
+                    name={[name, 'conditionType']}
+                    rules={[{ required: true, message: translate('condition_type_required') }]}
+                  >
+                    <Select
+                      placeholder={translate('select_condition_type')}
+                      options={conditionTypeOptions}
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    {...restField}
+                    label={translate('operator')}
+                    name={[name, 'operator']}
+                    rules={[{ required: true, message: translate('operator_required') }]}
+                  >
+                    <Select
+                      placeholder={translate('select_operator')}
+                      options={operatorOptions}
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    {...restField}
+                    label={translate('condition_value')}
+                    name={[name, 'value']}
+                    rules={[{ required: true, message: translate('condition_value_required') }]}
+                  >
+                    <Input placeholder={translate('enter_value')} />
+                  </Form.Item>
+
+                  <Form.Item
+                    {...restField}
+                    label={translate('target_levels')}
+                    name={[name, 'targetLevels']}
+                    rules={[{ required: true, message: translate('target_levels_required') }]}
+                    extra={translate('routing_rules_target_levels_help')}
+                  >
+                    <Select
+                      mode="multiple"
+                      placeholder={translate('select_target_levels')}
+                      options={levels
+                        .map(level => level?.levelNumber)
+                        .filter(Boolean)
+                        .map(levelNumber => ({
+                          label: `Level ${levelNumber}`,
+                          value: levelNumber,
+                        }))}
+                    />
+                  </Form.Item>
+                </Card>
+              ))}
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  {translate('add_routing_rule')}
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+        <Divider />
+        <div style={{ color: '#888', fontSize: 12 }}>
+          {translate('routing_rules_help_text')}
+        </div>
       </Card>
     </>
   );

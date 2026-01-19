@@ -450,6 +450,24 @@ const lang = {
   offers: 'Offers',
   proforma_invoices: 'quote',
   search: 'search',
+  routing_rules: 'Routing Rules',
+  rule: 'Rule',
+  condition_type: 'Condition Type',
+  select_condition_type: 'Select condition type',
+  condition_type_required: 'Condition type is required',
+  operator: 'Operator',
+  select_operator: 'Select operator',
+  operator_required: 'Operator is required',
+  condition_value: 'Condition Value',
+  enter_value: 'Enter value',
+  condition_value_required: 'Condition value is required',
+  target_levels: 'Target Levels',
+  select_target_levels: 'Select target levels',
+  target_levels_required: 'Target levels are required',
+  routing_rules_target_levels_help: 'Select which approval levels to activate when the rule matches',
+  add_routing_rule: 'Add routing rule',
+  routing_rules_help_text:
+    'Rules are evaluated by document metadata (e.g., amount). If no rule matches, mandatory levels apply.',
 };
 
 export default lang;

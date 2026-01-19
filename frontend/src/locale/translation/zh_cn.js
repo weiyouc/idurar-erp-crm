@@ -84,6 +84,23 @@ const lang = {
   invalid_phone: '请输入有效的电话号码',
   password_too_short: '密码太短',
   passwords_not_match: '密码不匹配',
+  routing_rules: '路由规则',
+  rule: '规则',
+  condition_type: '条件类型',
+  select_condition_type: '选择条件类型',
+  condition_type_required: '条件类型为必填项',
+  operator: '运算符',
+  select_operator: '选择运算符',
+  operator_required: '运算符为必填项',
+  condition_value: '条件值',
+  enter_value: '输入值',
+  condition_value_required: '条件值为必填项',
+  target_levels: '目标审批层级',
+  select_target_levels: '选择目标层级',
+  target_levels_required: '目标层级为必填项',
+  routing_rules_target_levels_help: '当规则匹配时，选择需要启用的审批层级',
+  add_routing_rule: '添加路由规则',
+  routing_rules_help_text: '规则基于单据元数据（如金额）进行匹配；若无规则匹配，则使用必选层级。',
 };
 
 export default lang;

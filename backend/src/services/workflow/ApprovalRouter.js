@@ -29,26 +29,41 @@ class ApprovalRouter {
     try {
       let approvalLevels = [];
       
-      // If workflow has routing rules, evaluate them
-      if (workflow.routingRules && workflow.routingRules.length > 0) {
-        approvalLevels = await this.evaluateRoutingRules(workflow.routingRules, context);
-      }
-      
-      // If no routing rules matched or no routing rules exist, use default levels
-      if (approvalLevels.length === 0 && workflow.levels) {
-        approvalLevels = workflow.levels;
+      // Prefer workflow model helpers (supports documentType-specific rules)
+      if (typeof workflow.getRequiredLevels === 'function' && workflow.levels) {
+        const requiredLevelNumbers = workflow.getRequiredLevels(context);
+        approvalLevels = workflow.levels.filter(level =>
+          requiredLevelNumbers.includes(level.levelNumber)
+        );
+      } else {
+        // Legacy routing rules format support
+        if (workflow.routingRules && workflow.routingRules.length > 0) {
+          approvalLevels = await this.evaluateRoutingRules(workflow.routingRules, context);
+        }
+        
+        // If no routing rules matched or no routing rules exist, use default levels
+        if (approvalLevels.length === 0 && workflow.levels) {
+          approvalLevels = workflow.levels;
+        }
       }
       
       // Ensure all levels have valid approvers
       const validatedLevels = [];
       for (const level of approvalLevels) {
-        const validApprovers = await this.validateApprovers(level.approvers);
+        const approverIds = level.approvers
+          ? level.approvers
+          : await this.getApproversByRoleIds(level.approverRoles || []);
+        const validApprovers = await this.validateApprovers(approverIds);
         
         if (validApprovers.length > 0) {
+          const minApprovals =
+            level.approvalMode === 'all'
+              ? validApprovers.length
+              : level.minApprovals || 1;
           validatedLevels.push({
-            level: level.level,
+            level: level.levelNumber ?? level.level,
             approvers: validApprovers,
-            minApprovals: level.minApprovals || 1
+            minApprovals
           });
         }
       }
@@ -213,6 +228,31 @@ class ApprovalRouter {
       return admins.map(admin => admin._id);
     } catch (error) {
       console.error('Error getting approvers by role:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get approvers by role IDs
+   * 
+   * @param {Array<ObjectId>} roleIds - Role IDs
+   * @returns {Promise<Array<ObjectId>>} Array of admin IDs with those roles
+   */
+  static async getApproversByRoleIds(roleIds) {
+    try {
+      if (!roleIds || roleIds.length === 0) {
+        return [];
+      }
+      
+      const admins = await Admin.find({
+        roles: { $in: roleIds },
+        enabled: true,
+        removed: false
+      }).select('_id');
+      
+      return admins.map(admin => admin._id);
+    } catch (error) {
+      console.error('Error getting approvers by role IDs:', error);
       return [];
     }
   }

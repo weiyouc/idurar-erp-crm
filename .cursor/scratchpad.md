@@ -49,6 +49,9 @@ User asked for guidance on deploying a Node-based MCP server over HTTP to Cloudf
 **New Request (Jan 18, 2026)**:
 Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1.4 vs. current UI. Need to identify missing UI coverage or documentation mismatch before changes.
 
+**New Request (Jan 19, 2026)**:
+Implement full workflow configuration UI, role assignments, and amount-based routing rules; remove auto-seed fallback once fully configured.
+
 ## Key Challenges and Analysis
 
 1. **Role Clarification**: The document contains many uncertain roles (电脑部?, 待定?, etc.). We need to either:
@@ -77,6 +80,8 @@ Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1
    - Link these formats to the corresponding requirements sections
 
 7. **Manual vs UI Alignment**: Use cases 1.2 (attachments), 1.3 (export), 1.4 (workflow submit) are documented but may not exist in UI; need evidence-based gaps tied to specific screens/routes/components.
+
+8. **Workflow Configuration Completeness**: Need end-to-end workflow configuration UI aligned with workflow engine schema (levels, approver roles, routing rules), plus role assignments in admin UI and robust routing based on amount tiers.
 
 ## High-level Task Breakdown
 
@@ -214,6 +219,20 @@ Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1
   - Summarize gaps with evidence (file paths, screen names)
 - **Success Criteria**: Clear gap list for each use case with UI evidence or missing components noted
 
+### Task 14: Workflow Configuration UI + Role Assignments + Amount Routing
+- **Objective**: Deliver configurable workflow UI, role assignments, and amount-based routing, then remove auto-seed fallback
+- **Actions**:
+  - Map workflow engine schema to UI forms (levels, approver roles, routing rules)
+  - Add routing rule builder for amount tiers (gte/lte) and target levels
+  - Ensure workflow list/create/update screens align with backend API
+  - Expose role assignments for admins (assign roles to users)
+  - Verify approval routing by amount with seeded sample workflows
+  - Remove auto-seed fallback after configuration is in place
+- **Success Criteria**:
+  - Admin can configure workflows with amount tiers and role approvers
+  - Approval routing selects correct levels based on amount
+  - Auto-seed fallback removed without breaking submit
+
 ## Project Status Board
 
 - [x] Task 1: Document Structure Standardization (Completed via FRP & FIP)
@@ -229,6 +248,7 @@ Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1
 - [ ] Task 11: Fix Supplier Create 404 / Frontend Error
 - [ ] Task 12: Add CRUD RESTful Fallback in Request Client
 - [ ] Task 13: Gap Analysis - Manual vs UI for Use Cases 1.2/1.3/1.4
+- [ ] Task 14: Workflow Configuration UI + Role Assignments + Amount Routing
 
 ## Current Status / Progress Tracking
 
@@ -278,6 +298,8 @@ Gap analysis requested for `doc/end-to-end-user-manual.md` use cases 1.2, 1.3, 1
 - ✅ Gap analysis draft: Use cases 1.2/1.3/1.4 vs Supplier UI (manual vs UI mismatch)
 - ✅ Option A changes: Supplier export button, submit in update panel, attachments tab visible on update
 - ✅ Added default supplier workflow seeding on server startup to prevent submit errors
+- ✅ Fixed ApprovalRouter to support workflow level schema (approverRoles/levelNumber)
+- ✅ Added routing rule builder UI to workflow form (amount tiers + target levels)
 
 **Total Documentation:** ~6,200 lines across 9 files
 
@@ -409,6 +431,16 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 **Jan 19, 2026 Update:**
 - Fixed submit error by seeding a default supplier workflow on server startup.
 - If no active supplier workflow exists, it creates one using `procurement_manager` role.
+
+**Jan 19, 2026 Follow-up:**
+- Resolved "No approval levels determined" by aligning ApprovalRouter with workflow schema:
+  - Uses `workflow.getRequiredLevels` and `levelNumber`
+  - Resolves approvers from `approverRoles`
+
+**Jan 19, 2026 Follow-up 2:**
+- Added routing rules UI to `WorkflowForm` with condition type, operator, value, and target levels.
+- Added translations for routing rule fields in `en_us` and `zh_cn`.
+- Please create/update a workflow with routing rules and confirm rules are saved and visible.
 
 **Gap Analysis Completed (2025-01-27):**
 - Created comprehensive gap analysis report comparing current system capabilities against Silverplan requirements
