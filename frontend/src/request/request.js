@@ -252,13 +252,29 @@ const request = {
         }
         query = query.slice(0, -1);
 
-        const response = await axios.get(entityOrOptions + '/list' + query);
+        try {
+          const response = await axios.get(entityOrOptions + '/list' + query);
+          successHandler(response, {
+            notifyOnSuccess: false,
+            notifyOnFailed: false,
+          });
+          return response.data;
+        } catch (error) {
+          if (error?.response?.status === 404) {
+            const fallbackEntity =
+              entityOrOptions === 'workflow-instances'
+                ? 'workflows/instances'
+                : entityOrOptions;
+            const response = await axios.get(fallbackEntity + query);
+            successHandler(response, {
+              notifyOnSuccess: false,
+              notifyOnFailed: false,
+            });
+            return response.data;
+          }
+          throw error;
+        }
 
-        successHandler(response, {
-          notifyOnSuccess: false,
-          notifyOnFailed: false,
-        });
-        return response.data;
       }
       const { entity, options = {} } = entityOrOptions || {};
       let query = '?';
@@ -267,13 +283,27 @@ const request = {
       }
       query = query.slice(0, -1);
 
-      const response = await axios.get(entity + '/list' + query);
+      try {
+        const response = await axios.get(entity + '/list' + query);
+        successHandler(response, {
+          notifyOnSuccess: false,
+          notifyOnFailed: false,
+        });
+        return response.data;
+      } catch (error) {
+        if (error?.response?.status === 404) {
+          const fallbackEntity =
+            entity === 'workflow-instances' ? 'workflows/instances' : entity;
+          const response = await axios.get(fallbackEntity + query);
+          successHandler(response, {
+            notifyOnSuccess: false,
+            notifyOnFailed: false,
+          });
+          return response.data;
+        }
+        throw error;
+      }
 
-      successHandler(response, {
-        notifyOnSuccess: false,
-        notifyOnFailed: false,
-      });
-      return response.data;
     } catch (error) {
       return errorHandler(error);
     }
