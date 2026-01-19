@@ -85,6 +85,9 @@ exports.list = async (req, res) => {
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
+    if (id === 'list') {
+      return exports.list(req, res);
+    }
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,

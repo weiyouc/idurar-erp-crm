@@ -86,6 +86,9 @@ exports.listWorkflows = async (req, res) => {
 exports.getWorkflow = async (req, res) => {
   try {
     const { id } = req.params;
+    if (id === 'list') {
+      return exports.listWorkflows(req, res);
+    }
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
