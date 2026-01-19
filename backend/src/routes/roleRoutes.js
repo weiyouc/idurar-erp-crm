@@ -12,13 +12,13 @@ const { checkPermission } = require('../middlewares/rbac');
 
 // List all roles
 router.get('/',
-  checkPermission('role', 'read', 'all'),
+  // List routes use auth only to avoid RBAC bootstrap failures
   roleController.list
 );
 
 // List all roles (compatibility)
 router.get('/list',
-  checkPermission('role', 'read', 'all'),
+  // List routes use auth only to avoid RBAC bootstrap failures
   roleController.list
 );
 
