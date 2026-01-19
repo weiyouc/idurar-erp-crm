@@ -20,6 +20,7 @@
  *   GET    /api/workflow-instances/pending/me  - Get my pending approvals
  */
 
+const mongoose = require('mongoose');
 const Workflow = require('../models/appModels/Workflow');
 const WorkflowInstance = require('../models/appModels/WorkflowInstance');
 const WorkflowEngine = require('../services/workflow/WorkflowEngine');
@@ -85,10 +86,22 @@ exports.listWorkflows = async (req, res) => {
 exports.getWorkflow = async (req, res) => {
   try {
     const { id } = req.params;
-    
-    const workflow = await Workflow.findById(id)
-      .populate('createdBy', 'name email')
-      .populate('levels.approverRoles', 'name displayName');
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid workflow id'
+      });
+    }
+
+    let workflow = null;
+    try {
+      workflow = await Workflow.findById(id)
+        .populate('createdBy', 'name email')
+        .populate('levels.approverRoles', 'name displayName');
+    } catch (queryError) {
+      console.error('Error retrieving workflow (populate failed):', queryError);
+      workflow = await Workflow.findById(id);
+    }
     
     if (!workflow) {
       return res.status(404).json({

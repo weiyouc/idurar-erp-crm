@@ -13,6 +13,7 @@
  *   DELETE /api/roles/:id/permissions - Remove permissions from role
  */
 
+const mongoose = require('mongoose');
 const Role = require('../models/coreModels/Role');
 const Permission = require('../models/coreModels/Permission');
 const AuditLogService = require('../services/AuditLogService');
@@ -84,10 +85,22 @@ exports.list = async (req, res) => {
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
-    
-    const role = await Role.findById(id)
-      .populate('permissions')
-      .populate('inheritsFrom');
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid role id'
+      });
+    }
+
+    let role = null;
+    try {
+      role = await Role.findById(id)
+        .populate('permissions')
+        .populate('inheritsFrom');
+    } catch (queryError) {
+      console.error('Error retrieving role (populate failed):', queryError);
+      role = await Role.findById(id);
+    }
     
     if (!role) {
       return res.status(404).json({
