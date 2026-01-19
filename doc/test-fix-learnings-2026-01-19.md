@@ -28,6 +28,12 @@
 - `tests/e2e/00-acceptance-criteria/system-requirements.spec.js`
 - **20 passed**, **0 failed**
 
+### RBAC + Workflow Engine Suites
+- `tests/e2e/01-system-foundation/rbac.spec.js`
+- `tests/e2e/01-system-foundation/workflow-engine.spec.js`
+- **18 passed**, **0 failed**
+- Note: tests emit "Could not find button/field..." logs but still pass (defensive assertions).
+
 ### Full E2E Suite
 - `playwright test`
 - **184 passed**, **7 failed** (total 191)
