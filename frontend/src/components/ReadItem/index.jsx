@@ -7,7 +7,7 @@ import { dataForRead } from '@/utils/dataStructure';
 
 import { useCrudContext } from '@/context/crud';
 import { selectCurrentItem } from '@/redux/crud/selectors';
-import { valueByString } from '@/utils/helpers';
+import { valueByString, get } from '@/utils/helpers';
 
 import useLanguage from '@/locale/useLanguage';
 import { useDate } from '@/settings';
@@ -28,8 +28,16 @@ export default function ReadItem({ config }) {
       const propsKey = props.dataIndex;
       const propsTitle = props.title;
       const isDate = props.isDate || false;
-      let value = valueByString(currentResult, propsKey);
-      value = isDate ? dayjs(value).format(dateFormat) : value;
+      let rawValue;
+      if (Array.isArray(propsKey)) {
+        rawValue = propsKey.reduce((acc, key) => (acc ? acc[key] : undefined), currentResult);
+      } else {
+        rawValue = valueByString(currentResult, propsKey);
+      }
+      let value = isDate && rawValue ? dayjs(rawValue).format(dateFormat) : rawValue;
+      if (typeof props.render === 'function') {
+        value = props.render(rawValue, currentResult);
+      }
       list.push({ propsKey, label: propsTitle, value: value });
     });
     setListState(list);
