@@ -17,6 +17,7 @@
  * Returns 403 Forbidden if user doesn't have required permission.
  */
 
+const mongoose = require('mongoose');
 const Permission = require('../../models/coreModels/Permission');
 const Role = require('../../models/coreModels/Role');
 
@@ -63,7 +64,49 @@ const checkPermission = (resource, action, scope = 'own', context = {}) => {
         path: 'roles',
         populate: { path: 'permissions' }
       });
-      userRoles = populatedAdmin.roles || [];
+      if (!populatedAdmin) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required'
+        });
+      }
+
+      const rawRoles = populatedAdmin.roles;
+      userRoles = Array.isArray(rawRoles) ? rawRoles : rawRoles ? [rawRoles] : [];
+
+      // Resolve legacy role strings or unpopulated role IDs
+      const resolvedRoles = [];
+      const roleNameCandidates = [];
+      const roleIds = [];
+
+      for (const role of userRoles) {
+        if (!role) continue;
+        if (typeof role === 'string') {
+          if (mongoose.Types.ObjectId.isValid(role)) {
+            roleIds.push(role);
+          } else {
+            roleNameCandidates.push(role);
+          }
+          continue;
+        }
+        if (role._id && role.permissions !== undefined) {
+          resolvedRoles.push(role);
+        } else if (role._id) {
+          roleIds.push(role._id.toString());
+        }
+      }
+
+      if (roleIds.length > 0 || roleNameCandidates.length > 0) {
+        const fetchedRoles = await Role.find({
+          $or: [
+            ...(roleIds.length ? [{ _id: { $in: roleIds } }] : []),
+            ...(roleNameCandidates.length ? [{ name: { $in: roleNameCandidates } }] : [])
+          ]
+        }).populate('permissions');
+        resolvedRoles.push(...fetchedRoles);
+      }
+
+      userRoles = resolvedRoles;
       
       if (userRoles.length === 0) {
         console.error(`[checkPermission] User ${req.admin._id} (${req.admin.email}) has no roles assigned`);
