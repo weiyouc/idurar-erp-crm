@@ -67,8 +67,8 @@ app.use(fileUpload({
 app.use('/api', coreAuthRouter);
 app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
-app.use('/api', adminAuth.isValidAuthToken, roleRoutes);
-app.use('/api', adminAuth.isValidAuthToken, workflowRoutes);
+app.use('/api/roles', adminAuth.isValidAuthToken, roleRoutes);
+app.use('/api/workflows', adminAuth.isValidAuthToken, workflowRoutes);
 app.use('/api/workflow-instances', adminAuth.isValidAuthToken, workflowInstanceRoutes);
 app.use('/api/attachments', adminAuth.isValidAuthToken, attachmentRoutes);
 app.use('/api/suppliers', adminAuth.isValidAuthToken, supplierRoutes);
