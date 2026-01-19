@@ -20,6 +20,12 @@ router.get('/',
   workflowController.listWorkflows
 );
 
+// List all workflows (compatibility for request.list)
+router.get('/list',
+  checkPermission('workflow', 'read', 'all'),
+  workflowController.listWorkflows
+);
+
 // Get workflow by ID
 router.get('/:id',
   checkPermission('workflow', 'read'),

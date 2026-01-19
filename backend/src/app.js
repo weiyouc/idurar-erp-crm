@@ -17,6 +17,7 @@ const erpApiRouter = require('./routes/appRoutes/appApi');
 // Sprint 1: RBAC and Workflow routes
 const roleRoutes = require('./routes/roleRoutes');
 const workflowRoutes = require('./routes/workflowRoutes');
+const workflowInstanceRoutes = require('./routes/workflowInstanceRoutes');
 
 // Sprint 2: Attachment routes
 const attachmentRoutes = require('./routes/attachmentRoutes');
@@ -68,6 +69,7 @@ app.use('/api', adminAuth.isValidAuthToken, coreApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, erpApiRouter);
 app.use('/api', adminAuth.isValidAuthToken, roleRoutes);
 app.use('/api', adminAuth.isValidAuthToken, workflowRoutes);
+app.use('/api/workflow-instances', adminAuth.isValidAuthToken, workflowInstanceRoutes);
 app.use('/api/attachments', adminAuth.isValidAuthToken, attachmentRoutes);
 app.use('/api/suppliers', adminAuth.isValidAuthToken, supplierRoutes);
 app.use('/api/material-categories', adminAuth.isValidAuthToken, materialCategoryRoutes);
