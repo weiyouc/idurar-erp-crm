@@ -300,6 +300,7 @@ Implement full workflow configuration UI, role assignments, and amount-based rou
 - ✅ Added default supplier workflow seeding on server startup to prevent submit errors
 - ✅ Fixed ApprovalRouter to support workflow level schema (approverRoles/levelNumber)
 - ✅ Added routing rule builder UI to workflow form (amount tiers + target levels)
+- ✅ Added Admin user list/update APIs and UI for role assignment
 
 **Total Documentation:** ~6,200 lines across 9 files
 
@@ -441,6 +442,10 @@ Test Suites: 10 passed, 4 with minor adjustments needed
 - Added routing rules UI to `WorkflowForm` with condition type, operator, value, and target levels.
 - Added translations for routing rule fields in `en_us` and `zh_cn`.
 - Please create/update a workflow with routing rules and confirm rules are saved and visible.
+
+**Jan 19, 2026 Follow-up 3:**
+- Added admin list/update endpoints and Admin management UI to assign roles.
+- Navigation now includes Administration section with Users/Roles/Workflows/Approvals.
 
 **Gap Analysis Completed (2025-01-27):**
 - Created comprehensive gap analysis report comparing current system capabilities against Silverplan requirements

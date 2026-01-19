@@ -127,6 +127,33 @@ function Sidebar({ collapsible, isMobile = false }) {
       ],
     },
     {
+      key: 'administration',
+      label: <span style={{ cursor: 'default' }}>{translate('administration')}</span>,
+      icon: <SettingOutlined />,
+      children: [
+        {
+          key: 'admins',
+          label: <Link to={'/admins'}>{translate('users')}</Link>,
+          icon: <UserOutlined />,
+        },
+        {
+          key: 'roles',
+          label: <Link to={'/roles'}>{translate('roles')}</Link>,
+          icon: <TeamOutlined />,
+        },
+        {
+          key: 'workflows',
+          label: <Link to={'/workflows'}>{translate('workflows')}</Link>,
+          icon: <FilterOutlined />,
+        },
+        {
+          key: 'approvals',
+          label: <Link to={'/approvals'}>{translate('approvals')}</Link>,
+          icon: <FileOutlined />,
+        },
+      ],
+    },
+    {
       key: 'generalSettings',
       label: <Link to={'/settings'}>{translate('settings')}</Link>,
       icon: <SettingOutlined />,

@@ -33,6 +33,7 @@ const About = lazy(() => import('@/pages/About'));
 const RolePage = lazy(() => import('@/pages/Role'));
 const WorkflowPage = lazy(() => import('@/pages/Workflow'));
 const ApprovalDashboard = lazy(() => import('@/pages/ApprovalDashboard'));
+const AdminPage = lazy(() => import('@/pages/Admin'));
 
 // Sprint 3: Supplier Management
 const SupplierPage = lazy(() => import('@/pages/Supplier'));
@@ -155,6 +156,10 @@ let routes = {
     {
       path: '/approvals',
       element: <ApprovalDashboard />,
+    },
+    {
+      path: '/admins',
+      element: <AdminPage />,
     },
     
     // Sprint 3 Routes

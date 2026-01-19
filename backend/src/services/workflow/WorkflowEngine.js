@@ -72,7 +72,7 @@ class WorkflowEngine {
         submittedBy: initiatedBy,
         submittedAt: new Date(),
         requiredLevels,
-        currentLevel: 1, // Start at level 1
+        currentLevel: requiredLevels[0], // Start at first required level
         status: 'pending',
         metadata
       });
@@ -127,12 +127,19 @@ class WorkflowEngine {
       }
       
       // Check if approver is authorized for current level
-      const currentLevelData = instance.requiredLevels[instance.currentLevel - 1];
-      if (!currentLevelData) {
+      const currentLevelNumber = instance.currentLevel;
+      const levelConfig = instance.workflow?.getLevelConfig
+        ? instance.workflow.getLevelConfig(currentLevelNumber)
+        : null;
+      if (!levelConfig) {
         throw new Error('Invalid workflow level');
       }
-      
-      const isAuthorized = currentLevelData.approvers.some(
+
+      const approverIds = await ApprovalRouter.getApproversByRoleIds(
+        levelConfig.approverRoles || []
+      );
+
+      const isAuthorized = approverIds.some(
         approver => approver.toString() === approverId.toString()
       );
       
@@ -142,7 +149,7 @@ class WorkflowEngine {
       
       // Check if approver has already acted on this level
       const existingApproval = instance.approvalHistory.find(
-        h => h.level === instance.currentLevel && 
+        h => h.level === currentLevelNumber && 
              h.approver.toString() === approverId.toString()
       );
       
@@ -151,14 +158,36 @@ class WorkflowEngine {
       }
       
       // Record the approval/rejection
-      await instance.recordApproval({
-        approver: approverId,
-        action: action.toLowerCase(),
+      instance.recordApproval(
+        currentLevelNumber,
+        approverId,
+        action.toLowerCase(),
         comments
-      });
+      );
+
+      if (action.toLowerCase() === 'reject') {
+        instance.status = 'rejected';
+      } else {
+        const requiredApprovals =
+          levelConfig.approvalMode === 'all' ? approverIds.length : 1;
+        const approvalsAtLevel = instance.approvalHistory.filter(
+          h => h.level === currentLevelNumber && h.action === 'approve'
+        );
+
+        if (approvalsAtLevel.length >= requiredApprovals) {
+          if (instance.areAllLevelsCompleted()) {
+            instance.status = 'approved';
+            instance.completedAt = new Date();
+          } else {
+            instance.currentLevel = instance.nextLevel || instance.currentLevel;
+          }
+        }
+      }
+
+      await instance.save();
       
       // Refresh instance
-      await instance.populate(['workflow', 'initiatedBy', 'requiredLevels.approvers']);
+      await instance.populate(['workflow', 'submittedBy']);
       
       // Log the action
       await AuditLogService.logWorkflowAction({

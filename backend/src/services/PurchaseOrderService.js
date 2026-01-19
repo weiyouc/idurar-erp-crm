@@ -342,13 +342,11 @@ class PurchaseOrderService {
       }
       
       // Initiate workflow
-      const workflowType = 'purchase_order_approval';
       const workflowInstance = await WorkflowEngine.initiateWorkflow({
-        workflowType,
-        documentId: poId,
         documentType: 'purchase_order',
-        submittedBy: userId,
-        submissionData: {
+        documentId: poId,
+        initiatedBy: userId,
+        metadata: {
           poNumber: po.poNumber,
           totalAmount: po.totalAmount,
           currency: po.currency,

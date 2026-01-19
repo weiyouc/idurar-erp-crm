@@ -41,6 +41,7 @@ function AddNewItem({ config }) {
 }
 export default function DataTable({ config, extra = [] }) {
   let { entity, dataTableColumns, DATATABLE_TITLE, fields, searchConfig } = config;
+  const { disableAdd, disableDelete } = config || {};
   const { crudContextAction } = useCrudContext();
   const { panel, collapsedBox, modal, readBox, editBox, advancedBox } = crudContextAction;
   const translate = useLanguage();
@@ -59,15 +60,18 @@ export default function DataTable({ config, extra = [] }) {
       icon: <EditOutlined />,
     },
     ...extra,
-    {
-      type: 'divider',
-    },
-
-    {
-      label: translate('Delete'),
-      key: 'delete',
-      icon: <DeleteOutlined />,
-    },
+    ...(!disableDelete
+      ? [
+          {
+            type: 'divider',
+          },
+          {
+            label: translate('Delete'),
+            key: 'delete',
+            icon: <DeleteOutlined />,
+          },
+        ]
+      : []),
   ];
 
   const handleRead = (record) => {
@@ -193,7 +197,7 @@ export default function DataTable({ config, extra = [] }) {
             {translate('Refresh')}
           </Button>,
 
-          <AddNewItem key={`${uniqueId()}`} config={config} />,
+          !disableAdd && <AddNewItem key={`${uniqueId()}`} config={config} />,
         ]}
         style={{
           padding: '20px 0px',

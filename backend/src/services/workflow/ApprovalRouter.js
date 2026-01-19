@@ -32,9 +32,7 @@ class ApprovalRouter {
       // Prefer workflow model helpers (supports documentType-specific rules)
       if (typeof workflow.getRequiredLevels === 'function' && workflow.levels) {
         const requiredLevelNumbers = workflow.getRequiredLevels(context);
-        approvalLevels = workflow.levels.filter(level =>
-          requiredLevelNumbers.includes(level.levelNumber)
-        );
+        approvalLevels = requiredLevelNumbers;
       } else {
         // Legacy routing rules format support
         if (workflow.routingRules && workflow.routingRules.length > 0) {
@@ -43,32 +41,11 @@ class ApprovalRouter {
         
         // If no routing rules matched or no routing rules exist, use default levels
         if (approvalLevels.length === 0 && workflow.levels) {
-          approvalLevels = workflow.levels;
+          approvalLevels = workflow.levels.map(level => level.levelNumber).filter(Boolean);
         }
       }
       
-      // Ensure all levels have valid approvers
-      const validatedLevels = [];
-      for (const level of approvalLevels) {
-        const approverIds = level.approvers
-          ? level.approvers
-          : await this.getApproversByRoleIds(level.approverRoles || []);
-        const validApprovers = await this.validateApprovers(approverIds);
-        
-        if (validApprovers.length > 0) {
-          const minApprovals =
-            level.approvalMode === 'all'
-              ? validApprovers.length
-              : level.minApprovals || 1;
-          validatedLevels.push({
-            level: level.levelNumber ?? level.level,
-            approvers: validApprovers,
-            minApprovals
-          });
-        }
-      }
-      
-      return validatedLevels;
+      return approvalLevels;
     } catch (error) {
       console.error('Error determining approval path:', error);
       throw error;

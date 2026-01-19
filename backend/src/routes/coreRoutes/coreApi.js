@@ -14,6 +14,8 @@ const { singleStorageUpload } = require('@/middlewares/uploadMiddleware');
 router.route('/admin/read/:id').get(catchErrors(adminController.read));
 
 router.route('/admin/password-update/:id').patch(catchErrors(adminController.updatePassword));
+router.route('/admin/list').get(catchErrors(adminController.list));
+router.route('/admin/update/:id').patch(catchErrors(adminController.update));
 
 //_______________________________ Admin Profile _______________________________
 

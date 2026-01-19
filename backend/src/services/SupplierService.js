@@ -297,8 +297,8 @@ class SupplierService {
         workflowInstance = await WorkflowEngine.initiateWorkflow({
           documentType: 'supplier',
           documentId: supplier._id,
-          submittedBy: userId,
-          data: {
+          initiatedBy: userId,
+          metadata: {
             supplierNumber: supplier.supplierNumber,
             companyName: supplier.companyName,
             type: supplier.type
@@ -313,8 +313,8 @@ class SupplierService {
           workflowInstance = await WorkflowEngine.initiateWorkflow({
             documentType: 'supplier',
             documentId: supplier._id,
-            submittedBy: userId,
-            data: {
+            initiatedBy: userId,
+            metadata: {
               supplierNumber: supplier.supplierNumber,
               companyName: supplier.companyName,
               type: supplier.type
