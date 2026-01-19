@@ -11,6 +11,7 @@
 - **Workflow routing rules UI**: added rule builder (condition type/operator/value/target levels).
 - **Admin role assignment UI**: added admin list/update endpoints and frontend admin management screen.
 - **Read view rendering**: normalized object arrays for display (e.g., roles).
+- **Admin menus 404**: added `/api/workflows/list` and `/api/workflow-instances/*` compatibility routes so Roles/Workflows/Approvals pages load without 404s.
 
 ## Reasoning and Diagnosis Notes
 - **Purchase Order export**: timeout came from no download event; traced to missing backend export route and UI using a stub export handler. Added endpoint + `ExportButton` to trigger a real file download.
@@ -19,6 +20,7 @@
 - **Workflow routing rules**: approval routing needed amount tiers in UI to match backend schema. Added UI builder for rules and target levels to ensure persisted routing config.
 - **Admin role assignment**: approval failures were tied to missing role assignments. Exposed admin list/update endpoints and UI to assign roles cleanly.
 - **Read view `[object Object]`**: details panel rendered raw objects for arrays; used render functions and normalized arrays for display.
+- **Admin menus 404**: frontend `request.list` calls `/list`, while backend only exposed `/api/workflows` and `/api/workflows/instances`. Added aliases under `/api/workflows/list` and `/api/workflow-instances/*`.
 
 ## E2E Run Results
 

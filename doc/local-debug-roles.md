@@ -28,7 +28,14 @@ node src/setup/seedRoles.js
 AUTH_TOKEN="paste-jwt-here" API_URL="http://localhost:8888/api" node /Users/josephc/Documents/Projects/SP/idurar-erp-crm/code/debug/roles-check.js
 ```
 
-### 5) If it still returns 500
+### 5) If it returns 404 ("Api url doesn't exist")
+
+- Ensure the backend exposes role routes:
+  - `GET /api/roles`
+  - `GET /api/roles/list` (compatibility for `request.list`)
+- Confirm `backend/src/app.js` mounts `roleRoutes` under `/api`.
+
+### 6) If it still returns 500
 
 Check backend logs for stack traces around:
 - `backend/src/controllers/roleController.js`

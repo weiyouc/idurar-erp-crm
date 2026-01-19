@@ -7,25 +7,34 @@ if (!authToken) {
   process.exit(1);
 }
 
-const requestUrl = apiUrl.replace(/\/$/, '') + '/roles';
+const baseUrl = apiUrl.replace(/\/$/, '');
+const requestUrls = [`${baseUrl}/roles`, `${baseUrl}/roles/list`];
 
 async function run() {
-  console.log(`Checking ${requestUrl}`);
-  const response = await fetch(requestUrl, {
-    headers: {
-      Authorization: `Bearer ${authToken}`
+  for (const requestUrl of requestUrls) {
+    console.log(`Checking ${requestUrl}`);
+    const response = await fetch(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    const text = await response.text();
+    console.log(`Status: ${response.status}`);
+
+    try {
+      const json = JSON.parse(text);
+      console.log('Body:', JSON.stringify(json, null, 2));
+    } catch {
+      console.log('Body:', text);
     }
-  });
 
-  const text = await response.text();
-  console.log(`Status: ${response.status}`);
-
-  try {
-    const json = JSON.parse(text);
-    console.log('Body:', JSON.stringify(json, null, 2));
-  } catch {
-    console.log('Body:', text);
+    if (response.ok) {
+      return;
+    }
   }
+
+  process.exit(1);
 }
 
 run().catch((error) => {
