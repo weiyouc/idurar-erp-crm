@@ -283,9 +283,22 @@ workflowInstanceSchema.statics.findPendingApprovalsForUser = async function(user
   const Admin = mongoose.model('Admin');
   const user = await Admin.findById(userId).populate('roles');
   
-  if (!user || !user.roles || user.roles.length === 0) return [];
+  if (!user) return [];
   
-  const userRoleIds = user.roles.map(role => role._id);
+  let userRoles = Array.isArray(user.roles) ? user.roles : user.roles ? [user.roles] : [];
+  
+  // If no roles assigned but legacy role is owner, treat as system administrator
+  if (userRoles.length === 0 && user.role === 'owner') {
+    const Role = mongoose.model('Role');
+    const systemRole = await Role.findOne({ name: 'system_administrator', removed: false });
+    if (systemRole) {
+      userRoles = [systemRole];
+    }
+  }
+  
+  if (userRoles.length === 0) return [];
+  
+  const userRoleIds = userRoles.map(role => role._id);
   
   // Find all pending workflow instances
   let query = { status: 'pending' };
