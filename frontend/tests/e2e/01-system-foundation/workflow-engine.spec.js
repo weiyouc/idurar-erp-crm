@@ -278,6 +278,71 @@ test.describe('Amount-based Approval Routing (REQ-WF-003)', () => {
   });
 });
 
+test.describe.serial('Approval Dashboard Owner Role (REQ-WF-005)', () => {
+  test('owner without roles sees pending supplier approval', async ({ page, request }) => {
+    await login(page);
+
+    const token = await page.evaluate(() => {
+      try {
+        return JSON.parse(localStorage.getItem('auth') || '{}')?.current?.token;
+      } catch (e) {
+        return null;
+      }
+    });
+    expect(token).toBeTruthy();
+
+    const apiBase = process.env.PLAYWRIGHT_API_URL || 'http://localhost:8888/api';
+    const headers = { Authorization: `Bearer ${token}` };
+
+    // Fetch admin and temporarily clear roles to simulate legacy owner-only account
+    const adminListResponse = await request.get(`${apiBase}/admin/list`, { headers });
+    const adminList = await adminListResponse.json();
+    const admin = adminList?.result?.find((item) => item.email === 'admin@admin.com') || adminList?.result?.[0];
+    expect(admin?.id || admin?._id).toBeTruthy();
+
+    const adminId = admin.id || admin._id;
+    const originalRoleIds = Array.isArray(admin.roles)
+      ? admin.roles.map((role) => role?._id || role).filter(Boolean)
+      : [];
+
+    try {
+      await request.patch(`${apiBase}/admin/update/${adminId}`, {
+        headers,
+        data: { roles: [] },
+      });
+
+      // Create a supplier and submit for approval
+      const supplierPayload = {
+        companyName: { en: 'E2E Supplier', zh: 'E2E供应商' },
+        type: 'manufacturer',
+      };
+      const createSupplierResponse = await request.post(`${apiBase}/suppliers`, {
+        headers,
+        data: supplierPayload,
+      });
+      const supplierResult = await createSupplierResponse.json();
+      const supplierId = supplierResult?.result?._id || supplierResult?.result?.id;
+      expect(supplierId).toBeTruthy();
+
+      await request.post(`${apiBase}/suppliers/${supplierId}/submit`, { headers });
+
+      // Verify approval dashboard shows pending approvals
+      await navigateTo(page, '/approvals');
+      await waitForLoading(page);
+
+      const rows = page.locator('table tbody tr');
+      const rowCount = await rows.count();
+      expect(rowCount).toBeGreaterThan(0);
+    } finally {
+      // Restore roles to avoid impacting other tests
+      await request.patch(`${apiBase}/admin/update/${adminId}`, {
+        headers,
+        data: { roles: originalRoleIds },
+      });
+    }
+  });
+});
+
 test.describe('Approval Status Tracking (REQ-WF-004)', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
