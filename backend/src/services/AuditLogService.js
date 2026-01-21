@@ -201,24 +201,50 @@ class AuditLogService {
    * @param {Object} params
    * @param {ObjectId} params.user - User who performed the action
    * @param {string} params.action - Workflow action (e.g., 'workflow_initiated', 'workflow_approved')
-   * @param {ObjectId} params.workflowInstanceId - Workflow instance ID
+   * @param {ObjectId} [params.workflowInstanceId] - Workflow instance ID
    * @param {Object} [params.details={}] - Additional details
+   * @param {string} [params.entityType] - Entity type if not a workflow instance
+   * @param {ObjectId} [params.entityId] - Entity ID if not a workflow instance
+   * @param {Object} [params.metadata={}] - Alternate metadata payload
    * @returns {Promise<AuditLog>} Created audit log entry
    */
-  static async logWorkflowAction({ user, action, workflowInstanceId, details = {} }) {
+  static async logWorkflowAction({
+    user,
+    action,
+    workflowInstanceId,
+    details = {},
+    entityType,
+    entityId,
+    metadata = {}
+  }) {
     try {
-      const metadataDoc = {
-        extra: details
-      };
-      if (details.ip) metadataDoc.ip = details.ip;
-      if (details.userAgent) metadataDoc.userAgent = details.userAgent;
-      if (details.requestId) metadataDoc.requestId = details.requestId;
+      const resolvedEntityId = workflowInstanceId || entityId;
+      if (!resolvedEntityId) {
+        console.error('Error logging workflow action: entityId is required', {
+          action,
+          workflowInstanceId,
+          entityId
+        });
+        return null;
+      }
+
+      const resolvedEntityType = workflowInstanceId
+        ? 'WorkflowInstance'
+        : (entityType || 'WorkflowInstance');
+
+      const rawDetails = Object.keys(details).length > 0 ? details : metadata;
+      const extra = rawDetails?.extra ?? rawDetails ?? {};
+      const metadataDoc = { extra };
+
+      if (rawDetails?.ip) metadataDoc.ip = rawDetails.ip;
+      if (rawDetails?.userAgent) metadataDoc.userAgent = rawDetails.userAgent;
+      if (rawDetails?.requestId) metadataDoc.requestId = rawDetails.requestId;
       
       return await AuditLog.create({
         user,
         action,
-        entityType: 'WorkflowInstance',
-        entityId: workflowInstanceId,
+        entityType: resolvedEntityType,
+        entityId: resolvedEntityId,
         metadata: metadataDoc
       });
     } catch (error) {
