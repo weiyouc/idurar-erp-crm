@@ -14,7 +14,32 @@ if (major < 20) {
 require('dotenv').config({ path: '.env' });
 require('dotenv').config({ path: '.env.local' });
 
-mongoose.connect(process.env.DATABASE);
+// Database connection with proper error handling
+const connectDB = async () => {
+  try {
+    const mongoUri = process.env.DATABASE || process.env.MONGODB_URI;
+    if (!mongoUri) {
+      console.error('❌ DATABASE environment variable is not set!');
+      process.exit(1);
+    }
+
+    console.log('🔄 Connecting to MongoDB...');
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      maxPoolSize: 10,
+    });
+
+    console.log('✅ MongoDB connected successfully');
+  } catch (error) {
+    console.error('❌ MongoDB connection failed:', error.message);
+    console.error('🔥 Please check your DATABASE environment variable and MongoDB connection');
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -23,6 +48,10 @@ mongoose.connection.on('error', (error) => {
     `1. 🔥 Common Error caused issue → : check your .env file first and add your mongodb url`
   );
   console.error(`2. 🚫 Error → : ${error.message}`);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('⚠️ MongoDB disconnected');
 });
 
 const modelsFiles = globSync('./src/models/**/*.js');
