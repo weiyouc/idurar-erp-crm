@@ -2,11 +2,15 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright Configuration for UI Automation Tests
- * 
+ *
  * Tests validate all functional requirements from functional-requirements-plan.md
  */
 export default defineConfig({
   testDir: './tests/e2e',
+
+  // Global setup and teardown
+  globalSetup: './tests/e2e/global-setup.js',
+  globalTeardown: './tests/e2e/global-teardown.js',
   
   // Maximum time one test can run for
   timeout: 60 * 1000,

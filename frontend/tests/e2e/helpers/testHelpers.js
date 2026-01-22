@@ -206,20 +206,8 @@ export async function logout(page) {
   }
 }
 
-/**
- * Navigate to a specific page
- * @param {Page} page - Playwright page object
- * @param {string} path - Path to navigate to
- */
-export async function navigateTo(page, path) {
-  try {
-    await page.goto(path, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
-  } catch (error) {
-    // If navigation fails, try again
-    await page.goto(path, { waitUntil: 'load', timeout: 30000 });
-  }
-}
+// Original navigateTo function kept for backward compatibility
+// Enhanced version is navigateToEnhanced below
 
 /**
  * Fill a form field
@@ -229,51 +217,99 @@ export async function navigateTo(page, path) {
  * @returns {Promise<boolean>} True if field was filled, false otherwise
  */
 export async function fillField(page, fieldName, value) {
+  // First wait for any loading states
+  await waitForLoading(page);
+
+  // Enhanced selectors for form fields
   const selectors = [
+    // Direct name/id matches
     `input[name="${fieldName}"]`,
-    `input[placeholder*="${fieldName}"]`,
     `textarea[name="${fieldName}"]`,
+    `select[name="${fieldName}"]`,
+    `input[id="${fieldName}"]`,
+    `textarea[id="${fieldName}"]`,
+
+    // Placeholder-based matches
+    `input[placeholder*="${fieldName}"]`,
+    `textarea[placeholder*="${fieldName}"]`,
+    `input[placeholder*="${fieldName.toLowerCase()}"]`,
+    `textarea[placeholder*="${fieldName.toLowerCase()}"]`,
+
+    // Label-based matches (Ant Design patterns)
     `//label[contains(text(), "${fieldName}")]/following-sibling::*//input`,
     `//label[contains(text(), "${fieldName}")]/following-sibling::*//textarea`,
+    `//label[contains(text(), "${fieldName}")]/following-sibling::*//select`,
     `//label[contains(text(), "${fieldName}")]/ancestor::div[contains(@class, "ant-form-item")]//input`,
-    `//label[contains(text(), "${fieldName}")]/ancestor::div[contains(@class, "ant-form-item")]//textarea`
-  ];
-  
-  for (const selector of selectors) {
-    try {
-      const field = page.locator(selector).first();
-      if (await field.isVisible({ timeout: 2000 }).catch(() => false)) {
-        await field.waitFor({ state: 'visible', timeout: 2000 });
-        await field.fill(value);
-        await page.waitForTimeout(200); // Small delay to ensure value is set
-        return true;
-      }
-    } catch (e) {
-      continue;
-    }
-  }
-  
-  // If field not found, try case-insensitive search
-  const labelSelectors = [
+    `//label[contains(text(), "${fieldName}")]/ancestor::div[contains(@class, "ant-form-item")]//textarea`,
+    `//label[contains(text(), "${fieldName}")]/ancestor::div[contains(@class, "ant-form-item")]//select`,
+
+    // Case-insensitive label matches
     `//label[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), "${fieldName.toLowerCase()}")]/ancestor::div[contains(@class, "ant-form-item")]//input`,
-    `//label[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), "${fieldName.toLowerCase()}")]/ancestor::div[contains(@class, "ant-form-item")]//textarea`
+    `//label[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), "${fieldName.toLowerCase()}")]/ancestor::div[contains(@class, "ant-form-item")]//textarea`,
+
+    // Data attributes
+    `input[data-testid="${fieldName}"]`,
+    `textarea[data-testid="${fieldName}"]`,
+    `input[data-cy="${fieldName}"]`,
+    `textarea[data-cy="${fieldName}"]`
   ];
-  
-  for (const selector of labelSelectors) {
-    try {
-      const field = page.locator(selector).first();
-      if (await field.isVisible({ timeout: 2000 }).catch(() => false)) {
-        await field.waitFor({ state: 'visible', timeout: 2000 });
-        await field.fill(value);
-        await page.waitForTimeout(200);
-        return true;
+
+  // Try each selector with retries
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const timeout = attempt * 1500; // 1.5s, 3s, 4.5s
+
+    for (const selector of selectors) {
+      try {
+        const field = page.locator(selector).first();
+
+        // Check if field exists and is visible
+        if (await field.isVisible({ timeout: 500 }).catch(() => false)) {
+          await field.waitFor({ state: 'visible', timeout });
+
+          // Check if field is editable (not readonly/disabled)
+          const isReadOnly = await field.getAttribute('readonly').catch(() => null);
+          const isDisabled = await field.getAttribute('disabled').catch(() => null);
+
+          if (!isReadOnly && !isDisabled) {
+            // Clear existing value and fill new value
+            await field.clear();
+            await field.fill(value);
+
+            // Verify value was set
+            const actualValue = await field.inputValue().catch(() => '');
+            if (actualValue === value) {
+              await page.waitForTimeout(300); // Allow UI to process
+              return true;
+            } else {
+              console.warn(`Field "${fieldName}" value not set correctly. Expected: "${value}", Got: "${actualValue}"`);
+            }
+          } else {
+            console.warn(`Field "${fieldName}" is readonly/disabled`);
+          }
+        }
+      } catch (e) {
+        continue;
       }
-    } catch (e) {
-      continue;
+    }
+
+    // Wait before retrying
+    if (attempt < 3) {
+      await page.waitForTimeout(500);
     }
   }
-  
-  console.warn(`Could not find field: ${fieldName}`);
+
+  console.warn(`Could not find or fill field: ${fieldName}`);
+
+  // Take screenshot for debugging
+  try {
+    await page.screenshot({
+      path: `test-results/field-not-found-${fieldName.replace(/\s+/g, '-').toLowerCase()}.png`,
+      fullPage: false
+    });
+  } catch (e) {
+    // Ignore screenshot errors
+  }
+
   return false;
 }
 
@@ -340,34 +376,111 @@ export async function selectOption(page, fieldName, optionText) {
  * @returns {Promise<boolean>} True if button was clicked, false otherwise
  */
 export async function clickButton(page, buttonText) {
+  // First wait for any loading states to clear
+  await waitForLoading(page);
+
+  // Enhanced selectors for common UI patterns
   const selectors = [
+    // Direct text matches
     `button:has-text("${buttonText}")`,
     `a:has-text("${buttonText}")`,
     `[role="button"]:has-text("${buttonText}")`,
+
+    // Aria labels and titles
     `button[aria-label="${buttonText}"]`,
+    `button[title="${buttonText}"]`,
+    `a[aria-label="${buttonText}"]`,
+
+    // Case-insensitive text matches (for internationalization)
+    `button:has-text("${buttonText.toLowerCase()}")`,
+    `a:has-text("${buttonText.toLowerCase()}")`,
+
+    // XPath for partial text matches and nested elements
     `//button[contains(text(), "${buttonText}")]`,
     `//a[contains(text(), "${buttonText}")]`,
     `//span[contains(text(), "${buttonText}")]/ancestor::button`,
-    `//span[contains(text(), "${buttonText}")]/ancestor::a`
+    `//span[contains(text(), "${buttonText}")]/ancestor::a`,
+    `//div[contains(text(), "${buttonText}")]/ancestor::button`,
+    `//div[contains(text(), "${buttonText}")]/ancestor::a`,
+
+    // Ant Design specific patterns
+    `.ant-btn:has-text("${buttonText}")`,
+    `.ant-btn span:has-text("${buttonText}")`,
+
+    // Common UI patterns for create/save/submit
+    `button[type="submit"]:has-text("${buttonText}")`,
+    `input[type="submit"][value="${buttonText}"]`,
+
+    // Data attributes (common in modern apps)
+    `[data-testid="${buttonText.toLowerCase()}"]`,
+    `[data-cy="${buttonText.toLowerCase()}"]`,
+    `button[data-action="${buttonText.toLowerCase()}"]`
   ];
-  
-  for (const selector of selectors) {
-    try {
-      const button = page.locator(selector).first();
-      if (await button.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await button.waitFor({ state: 'visible', timeout: 3000 });
-        // Scroll into view if needed
-        await button.scrollIntoViewIfNeeded();
-        await button.click();
-        await page.waitForTimeout(300); // Small delay after click
-        return true;
+
+  // Try each selector with increasing timeouts
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const timeout = attempt * 2000; // 2s, 4s, 6s
+
+    for (const selector of selectors) {
+      try {
+        const button = page.locator(selector).first();
+
+        // Check if button exists and is visible
+        if (await button.isVisible({ timeout: 500 }).catch(() => false)) {
+          // Wait for button to be ready (not disabled, not loading)
+          await button.waitFor({ state: 'visible', timeout });
+          await page.waitForTimeout(200); // Small stabilization delay
+
+          // Check if button is enabled (not disabled or loading)
+          const isDisabled = await button.getAttribute('disabled').catch(() => null);
+          const isLoading = await button.locator('.anticon-loading, .loading').isVisible({ timeout: 500 }).catch(() => false);
+
+          if (!isDisabled && !isLoading) {
+            // Scroll into view if needed
+            await button.scrollIntoViewIfNeeded();
+
+            // Click with error handling
+            await Promise.race([
+              button.click({ timeout: 5000 }),
+              page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {})
+            ]);
+
+            await page.waitForTimeout(500); // Allow UI to respond
+            return true;
+          } else if (isDisabled) {
+            console.warn(`Button "${buttonText}" is disabled, waiting...`);
+            await page.waitForTimeout(1000);
+          } else if (isLoading) {
+            console.warn(`Button "${buttonText}" is loading, waiting...`);
+            await page.waitForTimeout(1000);
+          }
+        }
+      } catch (e) {
+        // Continue to next selector
+        continue;
       }
-    } catch (e) {
-      continue;
+    }
+
+    // If no button found in this attempt, wait before trying again
+    if (attempt < 3) {
+      console.warn(`Button "${buttonText}" not found, retrying in 1s (attempt ${attempt}/3)...`);
+      await page.waitForTimeout(1000);
     }
   }
-  
+
+  // If we get here, button was not found
   console.warn(`Could not find button: ${buttonText}`);
+
+  // Take a screenshot for debugging
+  try {
+    await page.screenshot({
+      path: `test-results/button-not-found-${buttonText.replace(/\s+/g, '-').toLowerCase()}.png`,
+      fullPage: true
+    });
+  } catch (e) {
+    // Ignore screenshot errors
+  }
+
   return false;
 }
 
@@ -544,16 +657,138 @@ export async function uploadFile(page, filePath, inputSelector = 'input[type="fi
  */
 export async function waitForLoading(page) {
   // Wait for loading spinners to disappear
-  await page.waitForSelector('.ant-spin, [class*="loading"], [class*="spinner"]', { 
-    state: 'hidden', 
-    timeout: 10000 
+  await page.waitForSelector('.ant-spin, [class*="loading"], [class*="spinner"]', {
+    state: 'hidden',
+    timeout: 10000
   }).catch(() => {});
-  
+
   // Wait for network to be idle (with timeout)
   await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
-  
+
   // Small delay to ensure everything is settled
   await page.waitForTimeout(500);
+}
+
+/**
+ * Wait for page to be ready for interaction
+ * @param {Page} page - Playwright page object
+ * @param {Object} options - Options for waiting
+ */
+export async function waitForPageReady(page, options = {}) {
+  const {
+    timeout = 30000,
+    waitForNetwork = true,
+    waitForReact = true
+  } = options;
+
+  try {
+    // Wait for basic page load
+    await page.waitForLoadState('domcontentloaded', { timeout });
+
+    // Wait for React to be ready (if applicable)
+    if (waitForReact) {
+      await page.waitForFunction(
+        () => window.React || document.querySelector('#root, [data-reactroot], .App'),
+        { timeout: timeout / 2 }
+      ).catch(() => {});
+    }
+
+    // Wait for network to be idle
+    if (waitForNetwork) {
+      await page.waitForLoadState('networkidle', { timeout: timeout / 2 }).catch(() => {});
+    }
+
+    // Wait for common loading indicators
+    await waitForLoading(page);
+
+    // Additional wait for UI stabilization
+    await page.waitForTimeout(1000);
+
+  } catch (error) {
+    console.warn('Page ready wait timed out, continuing anyway:', error.message);
+  }
+}
+
+/**
+ * Enhanced navigation with better error handling and waiting
+ * @param {Page} page - Playwright page object
+ * @param {string} path - Path to navigate to
+ * @param {Object} options - Navigation options
+ */
+export async function navigateToEnhanced(page, path, options = {}) {
+  const { timeout = 30000, waitForReady = true } = options;
+
+  try {
+    console.log(`Navigating to: ${path}`);
+    await page.goto(path, {
+      waitUntil: 'domcontentloaded',
+      timeout
+    });
+
+    if (waitForReady) {
+      await waitForPageReady(page, { timeout: timeout / 2 });
+    }
+
+  } catch (error) {
+    console.warn(`Navigation to ${path} failed, retrying with load state...`);
+    try {
+      await page.goto(path, { waitUntil: 'load', timeout });
+      if (waitForReady) {
+        await waitForPageReady(page, { timeout: timeout / 2 });
+      }
+    } catch (retryError) {
+      console.error(`Navigation to ${path} failed completely:`, retryError.message);
+      throw retryError;
+    }
+  }
+}
+
+/**
+ * Wait for element to be ready for interaction
+ * @param {Page} page - Playwright page object
+ * @param {string} selector - Element selector
+ * @param {Object} options - Wait options
+ */
+export async function waitForElementReady(page, selector, options = {}) {
+  const {
+    timeout = 10000,
+    visible = true,
+    enabled = true
+  } = options;
+
+  try {
+    const element = page.locator(selector).first();
+
+    if (visible) {
+      await element.waitFor({ state: 'visible', timeout });
+    } else {
+      await element.waitFor({ state: 'attached', timeout });
+    }
+
+    if (enabled) {
+      // Wait for element to not be disabled
+      await page.waitForFunction(
+        (sel) => {
+          const el = document.querySelector(sel);
+          return el && !el.disabled && !el.getAttribute('aria-disabled');
+        },
+        selector,
+        { timeout }
+      );
+    }
+
+    // Scroll into view
+    await element.scrollIntoViewIfNeeded();
+
+    // Small stabilization delay
+    await page.waitForTimeout(200);
+
+    return true;
+
+  } catch (error) {
+    console.warn(`Element not ready: ${selector}`, error.message);
+    return false;
+  }
 }
 
 /**
@@ -612,6 +847,228 @@ export async function createTestUser(page, userData) {
   
   await clickButton(page, 'Save');
   await waitForLoading(page);
+}
+
+/**
+ * Procurement-specific test helpers
+ */
+
+/**
+ * Create a supplier using the UI
+ * @param {Page} page - Playwright page object
+ * @param {Object} supplierData - Supplier data to create
+ */
+export async function createSupplier(page, supplierData = {}) {
+  const defaultData = {
+    companyNameZh: '测试供应商',
+    companyNameEn: 'Test Supplier',
+    type: 'manufacturer',
+    email: testData.randomEmail()
+  };
+
+  const data = { ...defaultData, ...supplierData };
+
+  // Navigate to suppliers page
+  await navigateTo(page, '/suppliers');
+  await waitForPageReady(page);
+
+  // Click create button
+  const createClicked = await clickButton(page, 'Create');
+  if (!createClicked) {
+    throw new Error('Could not find Create button on suppliers page');
+  }
+
+  await page.waitForTimeout(1000);
+
+  // Fill form fields
+  await fillField(page, 'Company Name (ZH)', data.companyNameZh);
+  await fillField(page, 'Company Name (EN)', data.companyNameEn);
+  await selectOption(page, 'Type', data.type);
+  await fillField(page, 'Email', data.email);
+
+  // Save
+  const saved = await clickButton(page, 'Save');
+  if (!saved) {
+    throw new Error('Could not find Save button');
+  }
+
+  // Wait for success
+  await waitForLoading(page);
+  return await verifySuccessMessage(page, 'created successfully');
+}
+
+/**
+ * Create a material using the UI
+ * @param {Page} page - Playwright page object
+ * @param {Object} materialData - Material data to create
+ */
+export async function createMaterial(page, materialData = {}) {
+  const defaultData = {
+    materialCode: `MAT-${Date.now()}`,
+    materialNameZh: '测试物料',
+    materialNameEn: 'Test Material',
+    unitOfMeasure: 'EA'
+  };
+
+  const data = { ...defaultData, ...materialData };
+
+  // Navigate to materials page
+  await navigateTo(page, '/materials');
+  await waitForPageReady(page);
+
+  // Click create button
+  const createClicked = await clickButton(page, 'Create');
+  if (!createClicked) {
+    throw new Error('Could not find Create button on materials page');
+  }
+
+  await page.waitForTimeout(1000);
+
+  // Fill form fields
+  await fillField(page, 'Material Code', data.materialCode);
+  await fillField(page, 'Material Name (ZH)', data.materialNameZh);
+  await fillField(page, 'Material Name (EN)', data.materialNameEn);
+  await selectOption(page, 'Unit of Measure', data.unitOfMeasure);
+
+  // Save
+  const saved = await clickButton(page, 'Save');
+  if (!saved) {
+    throw new Error('Could not find Save button');
+  }
+
+  // Wait for success
+  await waitForLoading(page);
+  return await verifySuccessMessage(page, 'created successfully');
+}
+
+/**
+ * Create a purchase order using the UI
+ * @param {Page} page - Playwright page object
+ * @param {Object} poData - PO data to create
+ */
+export async function createPurchaseOrder(page, poData = {}) {
+  const defaultData = {
+    supplier: 'Test Supplier',
+    material: 'Test Material',
+    quantity: 10,
+    unitPrice: 100.00
+  };
+
+  const data = { ...defaultData, ...poData };
+
+  // Navigate to POs page
+  await navigateTo(page, '/purchase-orders');
+  await waitForPageReady(page);
+
+  // Click create button
+  const createClicked = await clickButton(page, 'Create');
+  if (!createClicked) {
+    throw new Error('Could not find Create button on purchase orders page');
+  }
+
+  await page.waitForTimeout(1000);
+
+  // Fill form fields
+  await selectOption(page, 'Supplier', data.supplier);
+  await fillField(page, 'Quantity', data.quantity.toString());
+  await fillField(page, 'Unit Price', data.unitPrice.toString());
+
+  // Save
+  const saved = await clickButton(page, 'Save');
+  if (!saved) {
+    throw new Error('Could not find Save button');
+  }
+
+  // Wait for success
+  await waitForLoading(page);
+  return await verifySuccessMessage(page, 'created successfully');
+}
+
+/**
+ * Submit a document for approval
+ * @param {Page} page - Playwright page object
+ * @param {string} documentType - Type of document (supplier, purchase_order, etc.)
+ */
+export async function submitForApproval(page, documentType) {
+  // Look for submit button in various locations
+  const submitSelectors = [
+    'button:has-text("Submit")',
+    'button:has-text("Submit for Approval")',
+    'button:has-text("提交")',
+    'button[data-action="submit"]'
+  ];
+
+  for (const selector of submitSelectors) {
+    try {
+      const submitButton = page.locator(selector).first();
+      if (await submitButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await submitButton.click();
+
+        // Handle confirmation dialog if it appears
+        try {
+          const confirmButton = page.locator('button:has-text("Confirm"), button:has-text("确定")').first();
+          if (await confirmButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+            await confirmButton.click();
+          }
+        } catch (e) {
+          // No confirmation dialog
+        }
+
+        await waitForLoading(page);
+        return await verifySuccessMessage(page, 'submitted');
+      }
+    } catch (e) {
+      continue;
+    }
+  }
+
+  console.warn(`Could not find submit button for ${documentType}`);
+  return false;
+}
+
+/**
+ * Approve a document in the approval dashboard
+ * @param {Page} page - Playwright page object
+ * @param {string} documentType - Type of document to approve
+ */
+export async function approveDocument(page, documentType) {
+  // Navigate to approvals
+  await navigateTo(page, '/approvals');
+  await waitForPageReady(page);
+
+  // Look for approve button
+  const approveSelectors = [
+    'button:has-text("Approve")',
+    'button:has-text("批准")',
+    'button[data-action="approve"]'
+  ];
+
+  for (const selector of approveSelectors) {
+    try {
+      const approveButton = page.locator(selector).first();
+      if (await approveButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await approveButton.click();
+
+        // Handle confirmation
+        try {
+          const confirmButton = page.locator('button:has-text("Confirm"), button:has-text("确定")').first();
+          if (await confirmButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+            await confirmButton.click();
+          }
+        } catch (e) {
+          // No confirmation dialog
+        }
+
+        await waitForLoading(page);
+        return await verifySuccessMessage(page, 'approved');
+      }
+    } catch (e) {
+      continue;
+    }
+  }
+
+  console.warn(`Could not find approve button for ${documentType}`);
+  return false;
 }
 
 /**
