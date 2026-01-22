@@ -12,6 +12,8 @@ const routerApp = (entity, controller) => {
   router.route(`/${entity}/delete/:id`).delete(catchErrors(controller['delete']));
   router.route(`/${entity}/search`).get(catchErrors(controller['search']));
   router.route(`/${entity}/list`).get(catchErrors(controller['list']));
+  // Compatibility: allow list at base route
+  router.route(`/${entity}`).get(catchErrors(controller['list']));
   router.route(`/${entity}/listAll`).get(catchErrors(controller['listAll']));
   router.route(`/${entity}/filter`).get(catchErrors(controller['filter']));
   router.route(`/${entity}/summary`).get(catchErrors(controller['summary']));
