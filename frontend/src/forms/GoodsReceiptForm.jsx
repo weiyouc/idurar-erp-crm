@@ -54,10 +54,10 @@ const GoodsReceiptForm = ({ current, onSuccess, onCancel }) => {
 
   const fetchPurchaseOrders = async () => {
     try {
-      const response = await request.list({ 
+      const response = await request.list({
         entity: 'purchase-orders',
         options: {
-          filter: { status: 'approved' }
+          status: 'approved'
         }
       });
       if (response.success) {

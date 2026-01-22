@@ -54,10 +54,10 @@ const MaterialQuotationForm = ({ current, onSuccess, onCancel }) => {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await request.list({ 
+      const response = await request.list({
         entity: 'suppliers',
         options: {
-          filter: { status: 'active' }
+          status: 'active'
         }
       });
       if (response.success) {
@@ -70,10 +70,10 @@ const MaterialQuotationForm = ({ current, onSuccess, onCancel }) => {
 
   const fetchMaterials = async () => {
     try {
-      const response = await request.list({ 
+      const response = await request.list({
         entity: 'materials',
         options: {
-          filter: { status: 'active' }
+          status: 'active'
         }
       });
       if (response.success) {
