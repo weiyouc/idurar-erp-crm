@@ -45,7 +45,7 @@ const MaterialCategoryManager = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await request.get('/api/material-categories/tree');
+      const response = await request.get('material-categories/tree');
       if (response.success) {
         const formattedTree = formatTreeData(response.result);
         setTreeData(formattedTree);
@@ -213,12 +213,16 @@ const MaterialCategoryManager = () => {
 
       let response;
       if (isUpdateMode) {
-        response = await request.patch(
-          `/api/material-categories/${currentCategory.id}`,
-          formattedValues
-        );
+        response = await request.patch({
+          entity: 'material-categories',
+          id: currentCategory.id,
+          jsonData: formattedValues
+        });
       } else {
-        response = await request.post('/api/material-categories', formattedValues);
+        response = await request.post({
+          entity: 'material-categories',
+          jsonData: formattedValues
+        });
       }
 
       if (response.success) {
@@ -238,7 +242,10 @@ const MaterialCategoryManager = () => {
   const handleDelete = async (category) => {
     setLoading(true);
     try {
-      const response = await request.delete(`/api/material-categories/${category.id}`);
+      const response = await request.delete({
+        entity: 'material-categories',
+        id: category.id
+      });
       if (response.success) {
         message.success('分类已停用');
         fetchCategories();
@@ -256,7 +263,11 @@ const MaterialCategoryManager = () => {
   const handleActivate = async (category) => {
     setLoading(true);
     try {
-      const response = await request.patch(`/api/material-categories/${category.id}/activate`);
+      const response = await request.patch({
+        entity: 'material-categories',
+        id: category.id,
+        subEntity: 'activate'
+      });
       if (response.success) {
         message.success('分类已启用');
         fetchCategories();
@@ -274,7 +285,11 @@ const MaterialCategoryManager = () => {
   const handleDeactivate = async (category) => {
     setLoading(true);
     try {
-      const response = await request.patch(`/api/material-categories/${category.id}/deactivate`);
+      const response = await request.patch({
+        entity: 'material-categories',
+        id: category.id,
+        subEntity: 'deactivate'
+      });
       if (response.success) {
         message.success('分类已停用');
         fetchCategories();

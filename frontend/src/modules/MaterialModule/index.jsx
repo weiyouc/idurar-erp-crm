@@ -57,14 +57,15 @@ const MaterialModule = () => {
     setLoading(true);
     try {
       const { current, pageSize, ...filters } = params;
-      const response = await request.get('/api/materials', {
-        params: {
+      const response = await request.list({
+        entity: 'materials',
+        options: {
           page: current || pagination.current,
           items: pageSize || pagination.pageSize,
           ...filters,
         },
       });
-      
+
       if (response.success) {
         setData(response.result);
         const nextPagination = response.pagination || {};
@@ -85,7 +86,7 @@ const MaterialModule = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await request.get('/api/material-categories/tree?activeOnly=true');
+      const res = await request.get('material-categories/tree?activeOnly=true');
       if (res.success) {
         setCategories(buildTreeData(res.result));
       }
@@ -96,8 +97,9 @@ const MaterialModule = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const res = await request.get('/api/suppliers', {
-        params: { items: 100, status: 'active' },
+      const res = await request.list({
+        entity: 'suppliers',
+        options: { items: 100, status: 'active' },
       });
       if (res.success) {
         setSuppliers(res.result);
@@ -197,7 +199,10 @@ const MaterialModule = () => {
       onOk: async () => {
         setLoading(true);
         try {
-          const response = await request.delete(`/api/materials/${record._id}`);
+          const response = await request.delete({
+            entity: 'materials',
+            id: record._id
+          });
           if (response.success) {
             message.success(response.message);
             fetchMaterials({ current: pagination.current });
@@ -217,7 +222,11 @@ const MaterialModule = () => {
   const handleActivate = async (record) => {
     setLoading(true);
     try {
-      const response = await request.patch(`/api/materials/${record._id}/activate`);
+      const response = await request.patch({
+        entity: 'materials',
+        id: record._id,
+        subEntity: 'activate'
+      });
       if (response.success) {
         message.success('物料已启用');
         fetchMaterials({ current: pagination.current });
@@ -235,7 +244,11 @@ const MaterialModule = () => {
   const handleDeactivate = async (record) => {
     setLoading(true);
     try {
-      const response = await request.patch(`/api/materials/${record._id}/deactivate`);
+      const response = await request.patch({
+        entity: 'materials',
+        id: record._id,
+        subEntity: 'deactivate'
+      });
       if (response.success) {
         message.success('物料已停用');
         fetchMaterials({ current: pagination.current });
