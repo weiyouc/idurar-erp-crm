@@ -9,6 +9,8 @@ router.get('/statistics', materialQuotationController.statistics);
 router.post('/', materialQuotationController.create);
 router.get('/:id', materialQuotationController.read);
 router.get('/', materialQuotationController.list);
+// Compatibility: list endpoint for request.list()
+router.get('/list', materialQuotationController.list);
 router.put('/:id', materialQuotationController.update);
 router.delete('/:id', materialQuotationController.delete);
 

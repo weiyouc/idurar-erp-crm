@@ -51,6 +51,13 @@ router.route('/')
     purchaseOrderController.list
   );
 
+// Compatibility: list endpoint for request.list()
+router.route('/list')
+  .get(
+    checkPermission('purchase_order', 'list'),
+    purchaseOrderController.list
+  );
+
 router.route('/:id')
   .get(
     checkPermission('purchase_order', 'read'),

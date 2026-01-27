@@ -13,6 +13,9 @@ router.get('/export', goodsReceiptController.export);
 router.post('/', goodsReceiptController.create);
 router.get('/', goodsReceiptController.list);
 
+// Compatibility: list endpoint for request.list()
+router.get('/list', goodsReceiptController.list);
+
 // Business operations (must come before /:id routes)
 router.post('/:id/complete', goodsReceiptController.complete);
 router.post('/:id/quality-inspection', goodsReceiptController.qualityInspection);
