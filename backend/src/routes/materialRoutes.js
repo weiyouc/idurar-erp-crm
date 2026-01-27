@@ -45,6 +45,13 @@ router.route('/')
     materialController.list
   );
 
+// Compatibility: list endpoint for request.list()
+router.route('/list')
+  .get(
+    checkPermission('material', 'list'),
+    materialController.list
+  );
+
 router.route('/:id')
   .get(
     checkPermission('material', 'read'),
