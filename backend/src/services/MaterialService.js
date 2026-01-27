@@ -116,19 +116,21 @@ class MaterialService {
       const query = { removed: false };
       
       // Apply filters
-      if (filters.status) {
+      if (filters.status && filters.status !== 'undefined') {
         query.status = filters.status;
       }
       
-      if (filters.type) {
+      if (filters.type && filters.type !== 'undefined') {
         query.type = filters.type;
       }
       
-      if (filters.category) {
-        query.category = filters.category;
+      if (filters.category && filters.category !== 'undefined') {
+        if (mongoose.Types.ObjectId.isValid(filters.category)) {
+          query.category = filters.category;
+        }
       }
       
-      if (filters.search) {
+      if (filters.search && filters.search !== 'undefined') {
         // Text search on multiple fields
         const searchRegex = new RegExp(filters.search, 'i');
         query.$or = [
